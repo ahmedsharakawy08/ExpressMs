@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ExpressMs.Blazor.WebApp.Client": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58866;http://localhost:58867"
+    }
+  }
+}
