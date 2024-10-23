@@ -29,6 +29,7 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using ExpressMs.Messages;
 
 namespace ExpressMs;
 
@@ -70,6 +71,7 @@ public class ExpressMsHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        context.Services.Configure<TwilioConfig>(configuration.GetSection("TwilioConfig"));
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)

@@ -7,9 +7,12 @@
     <Nullable>enable</Nullable>
     <RootNamespace>ExpressMs</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <UserSecretsId>5b130cca-c1de-486c-8928-5e4e44eab86d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
+    <PackageReference Include="Twilio" Version="7.5.0" />
     <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="8.3.1" />
     <PackageReference Include="Volo.Abp.BackgroundJobs.Domain.Shared" Version="8.3.1" />
     <PackageReference Include="Volo.Abp.AuditLogging.Domain.Shared" Version="8.3.1" />
@@ -27,6 +30,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.4" />
+    <PackageReference Include="Westwind.WebView.HtmlToPdf" Version="0.7.0" />
+    <PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ExpressMs.EntityFrameworkCore.Applications;
 
-[Collection(ExpressMsTestConsts.CollectionDefinitionName)]
+//[Collection(ExpressMsTestConsts.CollectionDefinitionName)]
 public class EfCoreSampleAppServiceTests : SampleAppServiceTests<ExpressMsEntityFrameworkCoreTestModule>
 {
 

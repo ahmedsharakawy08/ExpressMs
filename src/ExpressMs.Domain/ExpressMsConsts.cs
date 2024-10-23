@@ -2,7 +2,7 @@
 
 public static class ExpressMsConsts
 {
-    public const string DbTablePrefix = "App";
+    public const string DbTablePrefix = "Ex";
 
     public const string DbSchema = null;
 }

@@ -12,6 +12,9 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.DependencyInjection;
+using ExpressMs.Recruitment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpressMs.EntityFrameworkCore;
 
@@ -38,17 +41,33 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<ExpressMsDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also ExpressMsMigrationsDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also ExpressMsMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
+        Configure<AbpEntityOptions>(options =>
+        {
+            options.Entity<RecruitmentApplication>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.ApplicationAddressData)
+                .Include(x => x.ApplicationEducations)
+                .Include(x => x.ApplicationRefrence)
+                .Include(x => x.ApplicationTrainings)
+                .Include(x => x.ApplicationWorkExperieces)
+                .Include(x => x.ComputerLanguageSkills)
+                .Include(x=>x.CompanyRelations);
 
+
+
+            });
+        });
     }
 }
