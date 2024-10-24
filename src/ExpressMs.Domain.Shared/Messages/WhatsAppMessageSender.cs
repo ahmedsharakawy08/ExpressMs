@@ -20,7 +20,7 @@ namespace ExpressMs.Messages
             Url = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png";
             TwilioClient.Init(TwilioConfig.Accountsid, TwilioConfig.AccountSecret);
             var twiliioclient = TwilioClient.GetRestClient;
-            var mes = MessageResource.Create(to: new PhoneNumber("whatsapp:2+" + reciever),
+            var mes = MessageResource.Create(to: new PhoneNumber("whatsapp:+2" + reciever),
                    from: new PhoneNumber(TwilioConfig.FromNumber),
                    mediaUrl: new List<Uri> { new Uri(Url) },
                    body: messageBody
