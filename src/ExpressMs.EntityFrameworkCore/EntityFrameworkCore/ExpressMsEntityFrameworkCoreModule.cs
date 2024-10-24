@@ -64,8 +64,11 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
                 .Include(x => x.ApplicationWorkExperieces)
                 .Include(x => x.ComputerLanguageSkills)
                 .Include(x=>x.CompanyRelations);
-
-
+            });
+            options.Entity<Department>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.Poitions);
 
             });
         });

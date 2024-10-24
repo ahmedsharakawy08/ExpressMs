@@ -10,7 +10,7 @@ namespace ExpressMs.Recruitment
         public string Name { set; get; }
         [ForeignKey("Department")]
         public Guid DepartmentId { set; get; }
-        public virtual Department Department  { set;get;}  
+        
 
     }
 }
