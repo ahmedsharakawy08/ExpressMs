@@ -29,6 +29,12 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<ApplicationEducationDto, RecruitmentApplicationEducation>()
        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap(); 
         CreateMap<RecruitmentApplication, RecruitmentApplicationDto>();
-        
+        CreateMap<ApplicationDepartmentEvaluationDto, ApplicationDepartmentEvaluation>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
+        CreateMap< ApplicationPersonalEvaluationDto,ApplicationPersonalEvaluation > ()
+    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
+        CreateMap<InsuranceData, InsuranceDataDto>().ReverseMap();
+        CreateMap<SalaryDetails, SalaryDetailsDto>().ReverseMap();
+
     }
 }

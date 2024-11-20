@@ -39,6 +39,15 @@ namespace ExpressMs.RectuitmentCo
         public bool ExExpress_Employees { set; get; }
         public bool HaveRelatives { set; get; }
         public string HowDidyouHear { set; get; }
+        public Guid DirectManager { set; get; }
+        public string NationalIdPlace { set; get; }
+        public string NationalIdDate { set; get; }
+        public string Nationality { set; get; }
+        public int KidsNumber { set; get; }
+        public DateTime DateToRecieveDocs { set; get; }
+        public double SafetyResult { set; get; }
+        public DateTime ActualStartDate { set; get; }
+        public int ContractPeriod { set; get; }//in months
         public DateTime ToStartAt { set; get; }
         public AppFinalDecision FinalDecision { set; get; }
         public List<ApplicationTrainingDto> ApplicationTrainings { set; get; }

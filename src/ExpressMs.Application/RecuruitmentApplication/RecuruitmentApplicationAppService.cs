@@ -11,7 +11,7 @@ namespace ExpressMs.RecuruitmentApplication
 {
     public class RecuruitmentApplicationAppService : ExpressMsAppService
     {
-        public IRepository<RecruitmentApplication> _recruitmentAppRepo;
+        private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
         public RecuruitmentApplicationAppService(IRepository<RecruitmentApplication> recruitmentAppRepo)
         {
             _recruitmentAppRepo = recruitmentAppRepo;
@@ -39,8 +39,6 @@ namespace ExpressMs.RecuruitmentApplication
             var data= await _recruitmentAppRepo.GetListAsync(true);
             var dto = ObjectMapper.Map<List<RecruitmentApplication>, List<RecruitmentApplicationDto>>(data);
             return dto;
-
-
         }
         public async Task<RecruitmentApplicationDto> GetByIdAsyc(Guid Id)
         {

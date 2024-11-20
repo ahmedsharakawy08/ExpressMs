@@ -63,7 +63,11 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
                 .Include(x => x.ApplicationTrainings)
                 .Include(x => x.ApplicationWorkExperieces)
                 .Include(x => x.ComputerLanguageSkills)
-                .Include(x=>x.CompanyRelations);
+                .Include(x=>x.CompanyRelations)
+                .Include(x=>x.ApplicationDepartmentEvaluation)
+                .Include(x=>x.ApplicationPersonalEvaluation)
+                .Include(x => x.InsuranceData)
+                .Include(x => x.SalaryDetails);
             });
             options.Entity<Department>(orderOptions =>
             {

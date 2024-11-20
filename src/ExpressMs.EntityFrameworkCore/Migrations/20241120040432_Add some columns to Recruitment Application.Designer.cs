@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120040432_Add some columns to Recruitment Application")]
+    partial class AddsomecolumnstoRecruitmentApplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -684,71 +687,6 @@ namespace ExpressMs.Migrations
                     b.ToTable("ExDepartments", (string)null);
                 });
 
-            modelBuilder.Entity("ExpressMs.Recruitment.InsuranceData", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("BasicSalary")
-                        .HasColumnType("float");
-
-                    b.Property<string>("CompanyNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<DateTime>("DeflictEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeflictStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("GrossSalary")
-                        .HasColumnType("float");
-
-                    b.Property<string>("InsuranceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.Property<string>("RelationToBussinessOwner")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SubscribedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("SubscribtionSalary")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.ToTable("ExInsuranceData", (string)null);
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.Position", b =>
                 {
                     b.Property<Guid>("Id")
@@ -983,53 +921,6 @@ namespace ExpressMs.Migrations
                     b.HasIndex("ApplicationId");
 
                     b.ToTable("ExRecruitmentApplicationEducations", (string)null);
-                });
-
-            modelBuilder.Entity("ExpressMs.Recruitment.SalaryDetails", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("BasicSalary")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<double>("HouseAllowance")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.Property<double>("OtherAllowances")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalSalary")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TransportationAllowance")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId")
-                        .IsUnique();
-
-                    b.ToTable("ExSalaryDetails", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -2916,17 +2807,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("RecruitmentApplication");
                 });
 
-            modelBuilder.Entity("ExpressMs.Recruitment.InsuranceData", b =>
-                {
-                    b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecruitmentApplication");
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.Position", b =>
                 {
                     b.HasOne("ExpressMs.Recruitment.Department", null)
@@ -2952,17 +2832,6 @@ namespace ExpressMs.Migrations
                     b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
                         .WithMany("ApplicationEducations")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecruitmentApplication");
-                });
-
-            modelBuilder.Entity("ExpressMs.Recruitment.SalaryDetails", b =>
-                {
-                    b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
-                        .WithOne("SalaryDetails")
-                        .HasForeignKey("ExpressMs.Recruitment.SalaryDetails", "ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3136,9 +3005,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("CompanyRelations");
 
                     b.Navigation("ComputerLanguageSkills");
-
-                    b.Navigation("SalaryDetails")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

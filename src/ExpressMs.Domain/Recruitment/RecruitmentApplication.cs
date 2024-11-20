@@ -29,6 +29,15 @@ namespace ExpressMs.Recruitment
         public bool ExExpress_Employees { set; get; }
         public bool HaveRelatives { set; get; }
         public string HowDidyouHear { set; get; }
+        public Guid  DirectManager { set; get; }
+        public string NationalIdPlace { set; get; }
+        public string NationalIdDate { set; get; }
+        public string Nationality { set; get; }
+        public int KidsNumber { set; get; }
+        public DateTime DateToRecieveDocs { set; get; }
+        public double SafetyResult { set; get; }
+        public DateTime ActualStartDate { set; get; }
+        public int ContractPeriod { set; get; }//in months
         public DateTime ToStartAt { set; get; }
         public AppFinalDecision FinalDecision { set; get; }
         public ICollection<ApplicationTraining> ApplicationTrainings { set; get; }
@@ -36,7 +45,12 @@ namespace ExpressMs.Recruitment
         public ICollection<ComputerLanguageSkills> ComputerLanguageSkills { set; get; }
         public ICollection<ApplicationRefrence> ApplicationRefrence { set; get; }
         public ICollection<CompanyRelations> CompanyRelations { set; get; }
+        public ICollection<ApplicationDepartmentEvaluation> ApplicationDepartmentEvaluation { set; get; }
+        public ICollection<ApplicationPersonalEvaluation> ApplicationPersonalEvaluation { set; get; }
         public virtual ApplicationAddressData ApplicationAddressData { get; set; }
+        public virtual SalaryDetails SalaryDetails { get; set; }
+        public virtual InsuranceData InsuranceData { get; set; }
+
 
         public RecruitmentApplication() {
 
@@ -45,7 +59,9 @@ namespace ExpressMs.Recruitment
             ApplicationWorkExperieces= new HashSet<ApplicationWorkExperiece>();
             ComputerLanguageSkills= new HashSet<ComputerLanguageSkills>();
             ApplicationRefrence=new HashSet<ApplicationRefrence>();
-            CompanyRelations=new HashSet<CompanyRelations>();   
+            ApplicationDepartmentEvaluation = new HashSet<ApplicationDepartmentEvaluation>();
+            ApplicationPersonalEvaluation=new HashSet<ApplicationPersonalEvaluation>();
+            CompanyRelations =new HashSet<CompanyRelations>();   
 
         }
 

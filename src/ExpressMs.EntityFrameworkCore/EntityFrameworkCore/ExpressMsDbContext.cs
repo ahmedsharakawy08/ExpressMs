@@ -41,7 +41,13 @@ public class ExpressMsDbContext :
     public DbSet<ApplicationAddressData> ApplicationAddressData { set; get; }
     public DbSet<Governorate> Governorate { set; get; }
     public DbSet<City> City { set; get; }
+    public DbSet<ApplicationPersonalEvaluation> ApplicationPersonalEvaluation { set; get; }
+    public DbSet<ApplicationDepartmentEvaluation> ApplicationDepartmentEvaluation { set; get; }
+    public DbSet<SalaryDetails> SalaryDetails { set; get; }
+    public DbSet<InsuranceData> InsuranceData { set; get; }
     
+
+
 
 
 
@@ -107,9 +113,7 @@ public class ExpressMsDbContext :
         //});
         builder.Entity<PayrollPaySlip>(b =>
         {
-            b.ToTable(ExpressMsConsts.DbTablePrefix + "PayrollPaySlips", ExpressMsConsts.DbSchema);
-          
-            
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "PayrollPaySlips", ExpressMsConsts.DbSchema);            
         });
         builder.Entity<Position>(b =>
         {
@@ -159,8 +163,23 @@ public class ExpressMsDbContext :
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "Cities", ExpressMsConsts.DbSchema);
         });
+        builder.Entity<ApplicationDepartmentEvaluation>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "ApplicationDepartmentEvaluations", ExpressMsConsts.DbSchema);
+        });
+        builder.Entity<ApplicationPersonalEvaluation>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "ApplicationPersonalEvaluations", ExpressMsConsts.DbSchema);
+        });
 
-
+        builder.Entity<SalaryDetails>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "SalaryDetails", ExpressMsConsts.DbSchema);
+        });
+        builder.Entity<InsuranceData>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "InsuranceData", ExpressMsConsts.DbSchema);
+        });
         builder.Entity<RecruitmentApplication>(b =>
         {
             b.ToTable("ExRecruitmentApplications");

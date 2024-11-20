@@ -47,7 +47,11 @@ namespace ExpressMs.RectuitmentCo
         public List<ComputerLanguageSkillsDto> ComputerLanguageSkills { set; get; }
         public List<ApplicationRefrenceDto> ApplicationRefrence { set; get; }
         public List<CompanyRelationDtos> CompanyRelations { set; get; }
+        public List<ApplicationDepartmentEvaluationDto> ApplicationDepartmentEvaluationDto { set; get; }
         public ApplicationAddressDataDto ApplicationAddressData { get; set; }
+        public InsuranceDataDto InsuranceDataDto { get; set; }
+        public SalaryDetailsDto SalaryDetailsDto { get; set; }
+
 
     }
 }

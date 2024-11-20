@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120041457_insurance Data and Salary Details")]
+    partial class insuranceDataandSalaryDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -689,9 +692,6 @@ namespace ExpressMs.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<double>("BasicSalary")
                         .HasColumnType("float");
 
@@ -743,8 +743,6 @@ namespace ExpressMs.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
 
                     b.ToTable("ExInsuranceData", (string)null);
                 });
@@ -990,9 +988,6 @@ namespace ExpressMs.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<double>("BasicSalary")
                         .HasColumnType("float");
 
@@ -1025,9 +1020,6 @@ namespace ExpressMs.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId")
-                        .IsUnique();
 
                     b.ToTable("ExSalaryDetails", (string)null);
                 });
@@ -2916,17 +2908,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("RecruitmentApplication");
                 });
 
-            modelBuilder.Entity("ExpressMs.Recruitment.InsuranceData", b =>
-                {
-                    b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecruitmentApplication");
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.Position", b =>
                 {
                     b.HasOne("ExpressMs.Recruitment.Department", null)
@@ -2952,17 +2933,6 @@ namespace ExpressMs.Migrations
                     b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
                         .WithMany("ApplicationEducations")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecruitmentApplication");
-                });
-
-            modelBuilder.Entity("ExpressMs.Recruitment.SalaryDetails", b =>
-                {
-                    b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
-                        .WithOne("SalaryDetails")
-                        .HasForeignKey("ExpressMs.Recruitment.SalaryDetails", "ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3136,9 +3106,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("CompanyRelations");
 
                     b.Navigation("ComputerLanguageSkills");
-
-                    b.Navigation("SalaryDetails")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
