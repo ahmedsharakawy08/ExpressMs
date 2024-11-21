@@ -12,5 +12,6 @@ namespace ExpressMs.RectuitmentCo
         public string Type { set; get; }
         public string Value { set; get; }
         public string Comments { set; get; }
+        public Guid ApplicationId { set; get; }
     }
 }
