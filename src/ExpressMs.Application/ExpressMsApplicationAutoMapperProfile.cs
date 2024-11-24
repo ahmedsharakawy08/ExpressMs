@@ -35,6 +35,7 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
         CreateMap<InsuranceData, InsuranceDataDto>().ReverseMap();
         CreateMap<SalaryDetails, SalaryDetailsDto>().ReverseMap();
+        CreateMap<PersonalEmergencyPeople, PersonalEmergencyPeopleDto>().ReverseMap();
 
     }
 }

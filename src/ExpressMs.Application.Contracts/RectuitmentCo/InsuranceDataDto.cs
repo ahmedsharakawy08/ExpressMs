@@ -17,6 +17,7 @@ namespace ExpressMs.RectuitmentCo
         public double GrossSalary { set; get; }
         public string RelationToBussinessOwner { set; get; }
         public DateTime DeflictStartDate { set; get; }
-        public DateTime DeflictEndDate { set; get; }
+        public double DeflictPercent { set; get; }
+        public Guid ApplicationId { set; get; }
     }
 }

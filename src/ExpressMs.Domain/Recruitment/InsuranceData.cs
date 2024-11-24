@@ -20,7 +20,7 @@ namespace ExpressMs.Recruitment
         public double GrossSalary { set; get; }
         public string RelationToBussinessOwner { set; get; }
         public DateTime DeflictStartDate { set; get; }
-        public DateTime DeflictEndDate { set; get; }
+        public double DeflictPercent { set; get; }
         [ForeignKey("RecruitmentApplication")]
         public Guid ApplicationId { set; get; }
         [JsonIgnore]

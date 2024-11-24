@@ -15,6 +15,7 @@ namespace ExpressMs.RectuitmentCo
         public string Overall { set; get; }
         public Guid InterviewedBy { set; get; }
         public Guid ApplicationId { set; get; }
+        public string Decision { set; get; }
 
     }
 }

@@ -45,7 +45,9 @@ public class ExpressMsDbContext :
     public DbSet<ApplicationDepartmentEvaluation> ApplicationDepartmentEvaluation { set; get; }
     public DbSet<SalaryDetails> SalaryDetails { set; get; }
     public DbSet<InsuranceData> InsuranceData { set; get; }
+    public DbSet<PersonalEmergencyPeople> PersonalEmergencyPeople { set; get; }
     
+
 
 
 
@@ -195,6 +197,11 @@ public class ExpressMsDbContext :
             //b.HasMany(x => x.ApplicationWorkExperieces);
 
         });
+        builder.Entity<PersonalEmergencyPeople>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "PersonalEmergencyPeople", ExpressMsConsts.DbSchema);
+        });
+        
 
     }
 }

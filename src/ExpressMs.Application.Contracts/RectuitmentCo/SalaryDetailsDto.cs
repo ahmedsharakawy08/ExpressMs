@@ -15,5 +15,6 @@ namespace ExpressMs.RectuitmentCo
 
         public double OtherAllowances { set; get; }
         public double TotalSalary { set; get; }
+        public Guid ApplicationId { set; get; }
     }
 }

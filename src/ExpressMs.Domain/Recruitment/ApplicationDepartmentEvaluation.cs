@@ -20,5 +20,6 @@ namespace ExpressMs.Recruitment
         public Guid ApplicationId { set; get; }
         [JsonIgnore]
         public virtual RecruitmentApplication RecruitmentApplication { set; get; }
+        public string Decision { set; get; }
     }
 }

@@ -13,5 +13,6 @@ namespace ExpressMs.RectuitmentCo
         public string Street { set; get; }
         public string City { set; get; }
         public string Government { set; get; }
+        public Guid ApplicationId { set; get; }
     }
 }
