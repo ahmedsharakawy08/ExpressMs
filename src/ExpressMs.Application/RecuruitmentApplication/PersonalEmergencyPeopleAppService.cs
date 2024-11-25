@@ -16,10 +16,10 @@ namespace ExpressMs.RecuruitmentApplication
         {
             _InsuranceData = InsuranceData;
         }
-        public async Task CreateAsync(PersonalEmergencyPeopleDto input)
+        public async Task CreateAsync(List<PersonalEmergencyPeopleDto> input)
         {
-            var data = ObjectMapper.Map<PersonalEmergencyPeopleDto, PersonalEmergencyPeople>(input);
-            await _InsuranceData.InsertAsync(data);
+            var data = ObjectMapper.Map<List<PersonalEmergencyPeopleDto>, List<PersonalEmergencyPeople>>(input);
+            await _InsuranceData.InsertManyAsync(data);
         }
         public async Task UpdateAsyc(PersonalEmergencyPeopleDto input, Guid appId)
         {

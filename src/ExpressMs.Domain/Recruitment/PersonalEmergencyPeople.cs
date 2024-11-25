@@ -10,6 +10,7 @@ namespace ExpressMs.Recruitment
         public string FullName { set;get; }
         public string Relation { set; get; }
         public string Number { set; get; }
+        public string Type { set; get; }
         [ForeignKey("RecruitmentApplication")]
         public Guid ApplicationId { set; get; }
         [JsonIgnore]
