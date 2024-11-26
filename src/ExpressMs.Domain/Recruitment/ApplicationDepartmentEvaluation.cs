@@ -15,7 +15,7 @@ namespace ExpressMs.Recruitment
         public string Strength { set; get; }
         public string Weakness { set; get; }    
         public string Overall { set;get; }
-        public string InterviewedBy { set; get; }
+        public Guid InterviewedBy { set; get; }
         [ForeignKey("RecruitmentApplication")]
         public Guid ApplicationId { set; get; }
         [JsonIgnore]

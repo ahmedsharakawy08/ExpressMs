@@ -34,6 +34,8 @@ namespace ExpressMs.RectuitmentCo
         public MartialStatus MartialStatus { set; get; }
         [Required]
         public Guid PositionId { set; get; }
+        public string PositionName { set; get; }
+        public string DepartmentName { set; get; }
         public List<ApplicationEducationDto> ApplicationEducations { set; get; }
         public int NoticePeriod { set; get; }
         public double ExpectedSalary { set; get; }
@@ -56,10 +58,12 @@ namespace ExpressMs.RectuitmentCo
         public List<ComputerLanguageSkillsDto> ComputerLanguageSkills { set; get; }
         public List<ApplicationRefrenceDto> ApplicationRefrence { set; get; }
         public List<CompanyRelationDtos> CompanyRelations { set; get; }
-        public List<ApplicationDepartmentEvaluationDto> ApplicationDepartmentEvaluationDto { set; get; }
+        public List<ApplicationDepartmentEvaluationDto> ApplicationDepartmentEvaluation { set; get; }
         public ApplicationAddressDataDto ApplicationAddressData { get; set; }
-        public InsuranceDataDto InsuranceDataDto { get; set; }
-        public SalaryDetailsDto SalaryDetailsDto { get; set; }
+        public InsuranceDataDto InsuranceData { get; set; }
+        public SalaryDetailsDto SalaryDetails { get; set; }
+        public List<PersonalEmergencyPeopleDto> PersonalEmergencyPeople { get; set; }
+        public List<ApplicationPersonalEvaluationDto> ApplicationPersonalEvaluation { get; set; }
 
 
     }

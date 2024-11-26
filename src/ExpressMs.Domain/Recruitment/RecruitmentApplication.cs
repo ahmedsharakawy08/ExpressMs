@@ -50,6 +50,8 @@ namespace ExpressMs.Recruitment
         public virtual ApplicationAddressData ApplicationAddressData { get; set; }
         public virtual SalaryDetails SalaryDetails { get; set; }
         public virtual InsuranceData InsuranceData { get; set; }
+        public  ICollection<PersonalEmergencyPeople> PersonalEmergencyPeople { get; set; }
+
 
 
         public RecruitmentApplication() {
@@ -61,7 +63,8 @@ namespace ExpressMs.Recruitment
             ApplicationRefrence=new HashSet<ApplicationRefrence>();
             ApplicationDepartmentEvaluation = new HashSet<ApplicationDepartmentEvaluation>();
             ApplicationPersonalEvaluation=new HashSet<ApplicationPersonalEvaluation>();
-            CompanyRelations =new HashSet<CompanyRelations>();   
+            CompanyRelations =new HashSet<CompanyRelations>();
+            PersonalEmergencyPeople=new HashSet<PersonalEmergencyPeople>();
 
         }
 

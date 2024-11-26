@@ -28,14 +28,18 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<ApplicationAddressDataDto, ApplicationAddressData>().ReverseMap();
         CreateMap<ApplicationEducationDto, RecruitmentApplicationEducation>()
        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap(); 
-        CreateMap<RecruitmentApplication, RecruitmentApplicationDto>();
+        CreateMap<RecruitmentApplication, RecruitmentApplicationDto>()
+            .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src =>src.Positions.Name ))
+           .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Positions.Department.Name)).ReverseMap();
         CreateMap<ApplicationDepartmentEvaluationDto, ApplicationDepartmentEvaluation>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
         CreateMap< ApplicationPersonalEvaluationDto,ApplicationPersonalEvaluation > ()
     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
-        CreateMap<InsuranceData, InsuranceDataDto>().ReverseMap();
-        CreateMap<SalaryDetails, SalaryDetailsDto>().ReverseMap();
-        CreateMap<PersonalEmergencyPeople, PersonalEmergencyPeopleDto>().ReverseMap();
+        CreateMap<PersonalEmergencyPeopleDto, PersonalEmergencyPeople>()
+     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
+
+        CreateMap<InsuranceDataDto, InsuranceData>().ReverseMap();
+        CreateMap<SalaryDetailsDto, SalaryDetails>().ReverseMap();
 
     }
 }
