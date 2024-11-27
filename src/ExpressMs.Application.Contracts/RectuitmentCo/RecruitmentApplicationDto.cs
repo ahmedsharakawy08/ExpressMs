@@ -36,6 +36,7 @@ namespace ExpressMs.RectuitmentCo
         public Guid PositionId { set; get; }
         public string PositionName { set; get; }
         public string DepartmentName { set; get; }
+        public virtual DateTime CreationTime { get; set; }
         public List<ApplicationEducationDto> ApplicationEducations { set; get; }
         public int NoticePeriod { set; get; }
         public double ExpectedSalary { set; get; }
