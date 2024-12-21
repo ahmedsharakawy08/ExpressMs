@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExpressMs.Employees;
 using ExpressMs.Payroll.Dtos;
 using ExpressMs.PayrollEntities;
 using ExpressMs.Recruitment;
@@ -30,7 +31,7 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap(); 
         CreateMap<RecruitmentApplication, RecruitmentApplicationDto>()
             .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src =>src.Positions.Name ))
-           .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Positions.Department.Name)).ReverseMap();
+           .ForPath(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Positions.Department.Name)).ReverseMap();
         CreateMap<ApplicationDepartmentEvaluationDto, ApplicationDepartmentEvaluation>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid())).ReverseMap();
         CreateMap< ApplicationPersonalEvaluationDto,ApplicationPersonalEvaluation > ()
@@ -40,6 +41,10 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
 
         CreateMap<InsuranceDataDto, InsuranceData>().ReverseMap();
         CreateMap<SalaryDetailsDto, SalaryDetails>().ReverseMap();
+        CreateMap<EmployeesDataDto, EmployeesData>().ReverseMap();
+        CreateMap<PenalityDto, Penalities>().ReverseMap();
+           // .ForPath(dest => dest.Users.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
+
 
     }
 }

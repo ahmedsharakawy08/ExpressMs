@@ -1,20 +1,31 @@
-﻿using ExpressMs.Recruitment;
+﻿using ExpressMs.Employees;
+using ExpressMs.Recruitment;
 using ExpressMs.RectuitmentCo;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 using Volo.Abp.ObjectMapping;
+using Volo.Abp.Users;
 
 namespace ExpressMs.RecuruitmentApplication
 {
     public class RecuruitmentApplicationAppService : ExpressMsAppService
     {
         private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
-        public RecuruitmentApplicationAppService(IRepository<RecruitmentApplication> recruitmentAppRepo)
+        private readonly IdentityUserManager _userManager;
+        private readonly IIdentityUserRepository _userRepo;
+        private readonly IRepository<EmployeesData, Guid> _employeesRepo;
+        public RecuruitmentApplicationAppService(IRepository<RecruitmentApplication> recruitmentAppRepo, IdentityUserManager userManager
+            , IIdentityUserRepository userRepo, IRepository<EmployeesData, Guid> employeesRepo)
         {
             _recruitmentAppRepo = recruitmentAppRepo;
+            _userManager = userManager;
+            _userRepo = userRepo;
+            _employeesRepo= employeesRepo;
         }
         public async Task<RecruitmentApplication> CreateAsync(CreateRecruitmentApplicationDto input)
         {
@@ -45,5 +56,58 @@ namespace ExpressMs.RecuruitmentApplication
             var data = await _recruitmentAppRepo.FindAsync(obj => obj.Id == Id, true);                
             return ObjectMapper.Map<RecruitmentApplication, RecruitmentApplicationDto>(data);
         }
+        public async Task ApproveEmployee(Guid appId,AppFinalDecision decision)
+        {
+            var users = await _userRepo.GetCountAsync();
+            var App = await _recruitmentAppRepo.FindAsync(obj => obj.Id == appId, true);
+            string usercode = (users + 1).ToString();
+            if (decision != AppFinalDecision.Rejected)
+            {
+
+                IdentityUser user = new IdentityUser(Guid.NewGuid(), usercode, App.Email);
+                user.Name = App.FullEnglishName;                    
+                user.SetPhoneNumber(App.MobilePhone, true);
+                user.SetIsActive(true);
+                await _userManager.CreateAsync(user, App.NationalID);
+               EmployeesData emp=new EmployeesData()
+               {
+                   Email = App.Email,
+                   FullEnglishName = App.FullEnglishName,
+                   FullArabicName = App.FullArabicName,
+                   ApplicationId = appId,
+                   BasicSalary=App.SalaryDetails.BasicSalary,
+                   BirthDate = App.BirthDate,
+                   Code=usercode,
+                   CompanyNumber=App.InsuranceData.CompanyNumber,
+                   DeflictPercent=App.InsuranceData.DeflictPercent,
+                   DeflictStartDate=App.InsuranceData.DeflictStartDate,
+                   DirectManager= App.DirectManager,
+                   Gender=App.Gender,
+                   FormType=App.FormType,
+                   GrossSalary = App.InsuranceData.GrossSalary,
+                   HomePhone=App.HomePhone,
+                   HouseAllowance=App.SalaryDetails.HouseAllowance,
+                   KidsNumber= App.KidsNumber,
+                   MartialStatus= App.MartialStatus,
+                   MobilePhone=App.MobilePhone,
+                   InsuranceNumber= App.InsuranceData.InsuranceNumber,
+                   NationalID=App.NationalID,
+                   Nationality=App.Nationality,
+                   OtherAllowances=App.SalaryDetails.OtherAllowances,
+                   PositionId=App.PositionId,
+                   RelationToBussinessOwner= App.InsuranceData.RelationToBussinessOwner,
+                   TotalSalary=App.SalaryDetails.TotalSalary,
+                   WhatsappPhone=App.WhatsappPhone,
+                  
+               };
+               await  _employeesRepo.InsertAsync(emp);
+
+                // TODO create entity of employees data with email
+            }
+            App.FinalDecision = decision;
+            await _recruitmentAppRepo.UpdateAsync(App);
+         
+        }
+
     } 
 }

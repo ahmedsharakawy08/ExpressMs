@@ -75,7 +75,7 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
             options.Entity<Department>(orderOptions =>
             {
                 orderOptions.DefaultWithDetailsFunc = query => query
-                .Include(o => o.Poitions);
+                .Include(o => o.Positions);
 
             });
             options.Entity<Position>(orderOptions =>

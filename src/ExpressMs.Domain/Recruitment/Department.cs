@@ -10,10 +10,10 @@ namespace ExpressMs.Recruitment
     public  class Department:Entity<Guid>
     {
         public string Name { set; get; }
-        public ICollection<Position> Poitions { set; get; }
+        public ICollection<Position> Positions { set; get; }
         public Department()
         {
-            Poitions=new HashSet<Position>();
+            Positions=new HashSet<Position>();
         }
 
     }

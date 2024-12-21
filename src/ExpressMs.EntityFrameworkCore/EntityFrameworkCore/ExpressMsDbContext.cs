@@ -1,7 +1,9 @@
-﻿using ExpressMs.GenericEntities;
+﻿using ExpressMs.Employees;
+using ExpressMs.GenericEntities;
 using ExpressMs.PayrollEntities;
 using ExpressMs.Recruitment;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -28,7 +30,7 @@ public class ExpressMsDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
-    public DbSet<PayrollPaySlip>PayrollPaySlip { get; set; }
+    public DbSet<PayrollPaySlip> PayrollPaySlip { get; set; }
     public DbSet<RecruitmentApplication> RecruitmentApplication { get; set; }
     public DbSet<Position> Position { get; set; }
     public DbSet<Department> Department { get; set; }
@@ -46,6 +48,9 @@ public class ExpressMsDbContext :
     public DbSet<SalaryDetails> SalaryDetails { set; get; }
     public DbSet<InsuranceData> InsuranceData { set; get; }
     public DbSet<PersonalEmergencyPeople> PersonalEmergencyPeople { set; get; }
+    public DbSet<EmployeesData> UserData { set; get; }
+    public DbSet<Penalities> Penalities { set; get; }
+
     
 
 
@@ -115,16 +120,23 @@ public class ExpressMsDbContext :
         //});
         builder.Entity<PayrollPaySlip>(b =>
         {
-            b.ToTable(ExpressMsConsts.DbTablePrefix + "PayrollPaySlips", ExpressMsConsts.DbSchema);            
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "PayrollPaySlips", ExpressMsConsts.DbSchema);
         });
         builder.Entity<Position>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "Positions", ExpressMsConsts.DbSchema);
+            b.HasKey(d => d.Id);
+            b.Property(d => d.Id).HasDefaultValueSql("newsequentialid()")  // For SQL Server
+            .ValueGeneratedOnAdd();
         });
         builder.Entity<Department>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "Departments", ExpressMsConsts.DbSchema);
+            b.HasKey(d => d.Id);
+            b.Property(d => d.Id).HasDefaultValueSql("newsequentialid()")  // For SQL Server
+            .ValueGeneratedOnAdd();
         });
+
         builder.Entity<RecruitmentApplication>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "RecruitmentApplications", ExpressMsConsts.DbSchema);
@@ -188,20 +200,28 @@ public class ExpressMsDbContext :
             b.ConfigureByConvention();
 
             //Define the relation
-           // b.HasMany(x => x.ApplicationEducations).WithOne(x => x.RecruitmentApplication).HasForeignKey(x => x.ApplicationId);
-           //b.HasMany(x => x.ApplicationRefrence);
-            b.HasMany(x => x.ApplicationTrainings).WithOne(x=>x.RecruitmentApplication).HasForeignKey(x=>x.ApplicationId);
-          //  b.HasMany(x => x.CompanyRelations);
+            // b.HasMany(x => x.ApplicationEducations).WithOne(x => x.RecruitmentApplication).HasForeignKey(x => x.ApplicationId);
+            //b.HasMany(x => x.ApplicationRefrence);
+            b.HasMany(x => x.ApplicationTrainings).WithOne(x => x.RecruitmentApplication).HasForeignKey(x => x.ApplicationId);
+            //  b.HasMany(x => x.CompanyRelations);
             //b.HasMany(x => x.ComputerLanguageSkills);
             //b.HasOne(x => x.ApplicationAddressData);
             //b.HasMany(x => x.ApplicationWorkExperieces);
 
         });
+        builder.Entity<EmployeesData>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "EmployeesData", ExpressMsConsts.DbSchema);
+        });
         builder.Entity<PersonalEmergencyPeople>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "PersonalEmergencyPeople", ExpressMsConsts.DbSchema);
         });
-        
+        builder.Entity<Penalities>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "Penalities", ExpressMsConsts.DbSchema);
+        });
+
 
     }
 }
