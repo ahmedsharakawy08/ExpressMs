@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 
 namespace ExpressMs.RecuruitmentApplication
@@ -19,6 +20,11 @@ namespace ExpressMs.RecuruitmentApplication
         public async Task CreateAsync(InsuranceDataDto input)
         {
             var data = ObjectMapper.Map<InsuranceDataDto, InsuranceData>(input);
+            var exists = await _InsuranceData.FirstOrDefaultAsync(obj => obj.ApplicationId == input.ApplicationId);
+            if (exists != null)
+            {
+                throw new UserFriendlyException("Data added before");
+            }
             await _InsuranceData.InsertAsync(data);
         }
         public async Task UpdateAsyc(InsuranceDataDto input, Guid appId)
