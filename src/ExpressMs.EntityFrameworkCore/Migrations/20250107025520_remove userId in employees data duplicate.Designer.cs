@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250107025520_remove userId in employees data duplicate")]
+    partial class removeuserIdinemployeesdataduplicate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,10 +42,6 @@ namespace ExpressMs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyNumber")
@@ -1036,10 +1035,6 @@ namespace ExpressMs.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -1102,9 +1097,6 @@ namespace ExpressMs.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("HaveRelatives")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Hired")
                         .HasColumnType("bit");
 
                     b.Property<string>("HomePhone")

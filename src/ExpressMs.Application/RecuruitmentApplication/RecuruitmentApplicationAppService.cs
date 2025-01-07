@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.ObjectMapping;
+using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
 namespace ExpressMs.RecuruitmentApplication
@@ -19,13 +20,15 @@ namespace ExpressMs.RecuruitmentApplication
         private readonly IdentityUserManager _userManager;
         private readonly IIdentityUserRepository _userRepo;
         private readonly IRepository<EmployeesData, Guid> _employeesRepo;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
         public RecuruitmentApplicationAppService(IRepository<RecruitmentApplication> recruitmentAppRepo, IdentityUserManager userManager
-            , IIdentityUserRepository userRepo, IRepository<EmployeesData, Guid> employeesRepo)
+            , IIdentityUserRepository userRepo, IRepository<EmployeesData, Guid> employeesRepo, IUnitOfWorkManager unitOfWorkManager)
         {
             _recruitmentAppRepo = recruitmentAppRepo;
             _userManager = userManager;
             _userRepo = userRepo;
             _employeesRepo= employeesRepo;
+            _unitOfWorkManager = unitOfWorkManager;
         }
         public async Task<RecruitmentApplication> CreateAsync(CreateRecruitmentApplicationDto input)
         {
@@ -56,20 +59,20 @@ namespace ExpressMs.RecuruitmentApplication
             var data = await _recruitmentAppRepo.FindAsync(obj => obj.Id == Id, true);                
             return ObjectMapper.Map<RecruitmentApplication, RecruitmentApplicationDto>(data);
         }
-        public async Task ApproveEmployee(Guid appId,AppFinalDecision decision)
+        public async Task ApproveEmployee(Guid appId)
         {
             var users = await _userRepo.GetCountAsync();
             var App = await _recruitmentAppRepo.FindAsync(obj => obj.Id == appId, true);
             string usercode = (users + 1).ToString();
-            if (decision != AppFinalDecision.Rejected)
-            {
-
+ 
                 IdentityUser user = new IdentityUser(Guid.NewGuid(), usercode, App.Email);
                 user.Name = App.FullEnglishName;                    
                 user.SetPhoneNumber(App.MobilePhone, true);
                 user.SetIsActive(true);
-                await _userManager.CreateAsync(user, App.NationalID);
-               EmployeesData emp=new EmployeesData()
+             //  var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: false);
+                var userAdded=  await _userManager.CreateAsync(user,"@Aa"+App.NationalID);
+           // await uow.CompleteAsync();
+            EmployeesData emp=new EmployeesData()
                {
                    Email = App.Email,
                    FullEnglishName = App.FullEnglishName,
@@ -98,13 +101,15 @@ namespace ExpressMs.RecuruitmentApplication
                    RelationToBussinessOwner= App.InsuranceData.RelationToBussinessOwner,
                    TotalSalary=App.SalaryDetails.TotalSalary,
                    WhatsappPhone=App.WhatsappPhone,
+                   InsuranceType=App.InsuranceData.Type,
+                   UserId= user.Id
                   
                };
                await  _employeesRepo.InsertAsync(emp);
 
                 // TODO create entity of employees data with email
-            }
-            App.FinalDecision = decision;
+            
+            App.Hired = true;
             await _recruitmentAppRepo.UpdateAsync(App);
          
         }

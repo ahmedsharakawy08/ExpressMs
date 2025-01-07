@@ -15,9 +15,8 @@ namespace ExpressMs.Employees
     public  class EmployeesData: FullAuditedAggregateRoot<Guid>
     {
 
-        [ForeignKey("AbpUsers")]
-        public Guid UserId { set; get; }
-        [JsonIgnore]
+        public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
         public virtual IdentityUser Users { set; get; }
         public string? Code { set;get; }
         public string? FullEnglishName { set; get; }
@@ -25,6 +24,7 @@ namespace ExpressMs.Employees
         public string? Email { set; get; }
         public string? NationalID { set; get; }
         public string? HomePhone { set; get; }
+        public string Company { set; get; }
         public string? MobilePhone { set; get; }
         public string? WhatsappPhone { set; get; }
         public Gender Gender { set; get; }

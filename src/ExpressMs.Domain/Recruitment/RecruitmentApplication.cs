@@ -27,6 +27,8 @@ namespace ExpressMs.Recruitment
         public int NoticePeriod { set; get; }
         public double ExpectedSalary { set; get; }
         public bool ExExpress_Employees { set; get; }
+        public string Company { set; get; }
+        public bool Hired { set; get; } 
         public bool HaveRelatives { set; get; }
         public string HowDidyouHear { set; get; }
         public Guid  DirectManager { set; get; }
