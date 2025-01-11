@@ -38,6 +38,7 @@ namespace ExpressMs.RectuitmentCo
         public string HowDidyouHear { set; get; }
         public Guid DirectManager { set; get; }
         public string NationalIdPlace { set; get; }
+        public string Company { set; get; }
         public string NationalIdDate { set; get; }
         public string Nationality { set; get; }
         public int KidsNumber { set; get; }

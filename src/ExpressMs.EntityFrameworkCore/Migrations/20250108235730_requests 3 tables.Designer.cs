@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250108235730_requests 3 tables")]
+    partial class requests3tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3413,7 +3416,7 @@ namespace ExpressMs.Migrations
             modelBuilder.Entity("ExpressMs.Requests.RequestStates", b =>
                 {
                     b.HasOne("ExpressMs.Requests.Request", "Requests")
-                        .WithMany("RequestStates")
+                        .WithMany()
                         .HasForeignKey("ReqId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3607,11 +3610,6 @@ namespace ExpressMs.Migrations
 
                     b.Navigation("SalaryDetails")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExpressMs.Requests.Request", b =>
-                {
-                    b.Navigation("RequestStates");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

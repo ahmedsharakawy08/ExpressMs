@@ -2,6 +2,8 @@
 using ExpressMs.GenericEntities;
 using ExpressMs.PayrollEntities;
 using ExpressMs.Recruitment;
+using ExpressMs.Requests;
+using ExpressMs.Vacations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -50,8 +52,12 @@ public class ExpressMsDbContext :
     public DbSet<PersonalEmergencyPeople> PersonalEmergencyPeople { set; get; }
     public DbSet<EmployeesData> UserData { set; get; }
     public DbSet<Penalities> Penalities { set; get; }
-
+    public DbSet<VacationRecords> VacationRecords { set; get; }
+    public DbSet<RequestStates> RequestSatates { set; get; }
+    public DbSet<RequestCycle> RequestCycle { set; get; }
+    public DbSet<Request> Request { set; get; }
     
+
 
 
 
@@ -220,6 +226,24 @@ public class ExpressMsDbContext :
         builder.Entity<Penalities>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "Penalities", ExpressMsConsts.DbSchema);
+        });
+        builder.Entity<VacationRecords>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "VacationRecords", ExpressMsConsts.DbSchema);
+        });
+
+        builder.Entity<Request>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "Requests", ExpressMsConsts.DbSchema);
+        });
+        builder.Entity<RequestCycle>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "RequestCycles", ExpressMsConsts.DbSchema);
+       
+        });
+        builder.Entity<RequestStates>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "RequestStates", ExpressMsConsts.DbSchema);
         });
 
 

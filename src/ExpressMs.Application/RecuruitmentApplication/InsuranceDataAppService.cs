@@ -21,11 +21,11 @@ namespace ExpressMs.RecuruitmentApplication
         {
             var data = ObjectMapper.Map<InsuranceDataDto, InsuranceData>(input);
             var exists = await _InsuranceData.FirstOrDefaultAsync(obj => obj.ApplicationId == input.ApplicationId);
-            if (exists != null)
+            if (exists == null)
             {
-                throw new UserFriendlyException("Data added before");
+                await _InsuranceData.InsertAsync(data);
             }
-            await _InsuranceData.InsertAsync(data);
+         
         }
         public async Task UpdateAsyc(InsuranceDataDto input, Guid appId)
         {

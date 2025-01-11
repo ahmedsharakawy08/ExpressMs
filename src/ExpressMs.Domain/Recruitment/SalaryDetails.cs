@@ -11,7 +11,6 @@ namespace ExpressMs.Recruitment
 
         public double HouseAllowance { set; get; }
         public double TransportationAllowance { set; get; }
-
         public double OtherAllowances { set; get; }
         public double TotalSalary { set; get; }
         [ForeignKey("RecruitmentApplication")]

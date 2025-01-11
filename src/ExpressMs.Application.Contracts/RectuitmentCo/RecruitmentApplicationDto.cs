@@ -35,6 +35,7 @@ namespace ExpressMs.RectuitmentCo
         [Required]
         public Guid PositionId { set; get; }
         public string PositionName { set; get; }
+        public bool Hired { set; get; }
         public string DepartmentName { set; get; }
         public virtual DateTime CreationTime { get; set; }
         public List<ApplicationEducationDto> ApplicationEducations { set; get; }

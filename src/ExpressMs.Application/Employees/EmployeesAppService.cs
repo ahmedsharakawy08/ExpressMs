@@ -24,9 +24,9 @@ namespace ExpressMs.Users
             var data = ObjectMapper.Map<EmployeesData,EmployeesDataDto >(Employee);
             return data;
         }
-        public async Task<List<EmployeesDataDto>> GetEmployeesListAsync(Guid Id)
+        public async Task<List<EmployeesDataDto>> GetEmployeesListAsync()
         {
-            var Employee = await _employeesRepo.GetListAsync(obj => obj.UserId == Id, true);
+            var Employee = await _employeesRepo.GetListAsync(true);
             var data = ObjectMapper.Map<List<EmployeesData>, List<EmployeesDataDto>>(Employee);
             return data;
         }

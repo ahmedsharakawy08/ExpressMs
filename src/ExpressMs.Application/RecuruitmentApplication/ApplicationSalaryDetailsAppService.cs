@@ -22,11 +22,10 @@ namespace ExpressMs.RecuruitmentApplication
         {
             var data = ObjectMapper.Map<SalaryDetailsDto, SalaryDetails>(input);
             var exists = await _AppSalaryDetails.FirstOrDefaultAsync(obj => obj.ApplicationId == input.ApplicationId);
-            if (exists != null)
+            if (exists == null)
             {
-                throw new UserFriendlyException("Data added before");
+                await _AppSalaryDetails.InsertAsync(data);
             }
-            await _AppSalaryDetails.InsertAsync(data);
           
         }
         public async Task UpdateAsyc(SalaryDetailsDto input, Guid appId)

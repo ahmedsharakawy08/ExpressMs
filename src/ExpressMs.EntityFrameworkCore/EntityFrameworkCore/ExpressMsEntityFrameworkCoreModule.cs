@@ -15,6 +15,8 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.DependencyInjection;
 using ExpressMs.Recruitment;
 using Microsoft.EntityFrameworkCore;
+using ExpressMs.Employees;
+using ExpressMs.Requests;
 
 namespace ExpressMs.EntityFrameworkCore;
 
@@ -82,6 +84,18 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
             {
                 orderOptions.DefaultWithDetailsFunc = query => query
                 .Include(o => o.Department);
+
+            });
+            options.Entity<EmployeesData>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.RecruitmentApplication).ThenInclude(o => o.Positions);
+
+            });
+            options.Entity<Request>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.RequestStates);
 
             });
         });

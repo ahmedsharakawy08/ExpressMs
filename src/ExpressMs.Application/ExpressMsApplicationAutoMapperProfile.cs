@@ -4,6 +4,9 @@ using ExpressMs.Payroll.Dtos;
 using ExpressMs.PayrollEntities;
 using ExpressMs.Recruitment;
 using ExpressMs.RectuitmentCo;
+using ExpressMs.Requests;
+using ExpressMs.Vacation;
+using ExpressMs.Vacations;
 using System;
 
 namespace ExpressMs;
@@ -43,8 +46,14 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<SalaryDetailsDto, SalaryDetails>().ReverseMap();
         CreateMap<EmployeesDataDto, EmployeesData>().ReverseMap();
         CreateMap<PenalityDto, Penalities>().ReverseMap();
-           // .ForPath(dest => dest.Users.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
+        // .ForPath(dest => dest.Users.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
 
+        CreateMap<VacationRecords,VacationRecordDto>()
+       .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>src.Users.UserName )).ReverseMap();
+
+        CreateMap<CreateVacationRecordDto, VacationRecords>();
+        CreateMap<CreateRequestCycleDto, RequestCycle>().ReverseMap();
+        
 
     }
 }

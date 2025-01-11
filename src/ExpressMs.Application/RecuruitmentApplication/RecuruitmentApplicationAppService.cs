@@ -1,16 +1,13 @@
 ﻿using ExpressMs.Employees;
 using ExpressMs.Recruitment;
 using ExpressMs.RectuitmentCo;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
-using Volo.Abp.ObjectMapping;
 using Volo.Abp.Uow;
-using Volo.Abp.Users;
 
 namespace ExpressMs.RecuruitmentApplication
 {
@@ -102,9 +99,12 @@ namespace ExpressMs.RecuruitmentApplication
                    TotalSalary=App.SalaryDetails.TotalSalary,
                    WhatsappPhone=App.WhatsappPhone,
                    InsuranceType=App.InsuranceData.Type,
-                   UserId= user.Id
+                   UserId= user.Id,
+                   Company=App.Company
                   
                };
+               var existEmp=_employeesRepo.GetAsync(obj=>obj.UserId==user.Id);
+            if( existEmp==null )
                await  _employeesRepo.InsertAsync(emp);
 
                 // TODO create entity of employees data with email
