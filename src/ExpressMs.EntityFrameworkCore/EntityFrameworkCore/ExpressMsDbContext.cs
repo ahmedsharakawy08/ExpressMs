@@ -150,10 +150,12 @@ public class ExpressMsDbContext :
         builder.Entity<ApplicationWorkExperiece>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "ApplicationWorkExperieces", ExpressMsConsts.DbSchema);
+  
         });
         builder.Entity<RecruitmentApplicationEducation>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "RecruitmentApplicationEducations", ExpressMsConsts.DbSchema);
+
         });
         builder.Entity<ApplicationTraining>(b =>
         {

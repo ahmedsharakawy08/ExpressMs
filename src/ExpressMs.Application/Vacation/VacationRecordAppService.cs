@@ -38,7 +38,7 @@ namespace ExpressMs.Vacation
         }
         public async Task<VacationRecordDto> GetByUserId(Guid userId)
         {
-            var vacation = await _vacationRecords.GetAsync(obj => obj.UserId == userId);
+            var vacation = await _vacationRecords.GetAsync(obj => obj.UserId == userId,true);
             var data = ObjectMapper.Map<VacationRecords,VacationRecordDto>(vacation);
             return data;
         }
@@ -47,6 +47,10 @@ namespace ExpressMs.Vacation
             var vacation = await _vacationRecords.GetAsync(obj => obj.UserId == input.UserId);
             var data = ObjectMapper.Map<CreateVacationRecordDto, VacationRecords>(input);
             await _vacationRecords.UpdateAsync(data);
+        }
+        public async Task DeleteVacationRecord(Guid  id)
+        {
+         await _vacationRecords.DeleteAsync(obj=>obj.Id == id);
         }
     }
 }

@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Uow;
+using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 
 namespace ExpressMs.RecuruitmentApplication
 {

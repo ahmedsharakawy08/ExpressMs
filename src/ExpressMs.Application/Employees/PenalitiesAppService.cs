@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 
 namespace ExpressMs.Employees
@@ -30,6 +31,15 @@ namespace ExpressMs.Employees
             var penalities = await _penalitiesRepo.GetListAsync(obj=>obj.UserId==userId);
             var data = ObjectMapper.Map<List<Penalities>, List<PenalityDto>>(penalities);
             return data;
+        }
+        public async Task DeletePenality(Guid id)
+        {
+            var penality = await _penalitiesRepo.FirstAsync(obj => obj.Id == id);
+            if(penality == null)
+            {
+                throw new UserFriendlyException("No penality for this user");
+            }
+            await _penalitiesRepo.DeleteAsync(penality);
         }
     }
 }

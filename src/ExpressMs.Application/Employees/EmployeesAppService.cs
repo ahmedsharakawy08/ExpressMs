@@ -14,9 +14,12 @@ namespace ExpressMs.Users
     public class EmployeesAppService : ExpressMsAppService
     {
         private readonly IRepository<EmployeesData,Guid> _employeesRepo;
-        public EmployeesAppService(IRepository<EmployeesData, Guid> employeesRepo)
+        private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
+        public EmployeesAppService(IRepository<EmployeesData, Guid> employeesRepo
+            , IRepository<RecruitmentApplication> recruitmentAppRepo)
         {
             _employeesRepo = employeesRepo;
+            _recruitmentAppRepo = recruitmentAppRepo;
         }
         public async Task<EmployeesDataDto>GetEmployeeByIdAsync(Guid  Id)
         {
@@ -29,6 +32,16 @@ namespace ExpressMs.Users
             var Employee = await _employeesRepo.GetListAsync(true);
             var data = ObjectMapper.Map<List<EmployeesData>, List<EmployeesDataDto>>(Employee);
             return data;
+        }
+
+        public async Task DeactIvateEmployee(Guid userId, Guid appId)
+        {
+            var app = await _recruitmentAppRepo.GetAsync(obj => obj.Id == appId);
+            var employee = await _employeesRepo.GetAsync(obj => obj.Id == userId, true);
+            employee.Users.SetIsActive(false);
+            await _employeesRepo.DeleteAsync(employee);
+            app.Hired = false;
+            await _recruitmentAppRepo.UpdateAsync(app);
         }
 
     }

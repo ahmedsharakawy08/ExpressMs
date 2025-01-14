@@ -45,11 +45,13 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<InsuranceDataDto, InsuranceData>().ReverseMap();
         CreateMap<SalaryDetailsDto, SalaryDetails>().ReverseMap();
         CreateMap<EmployeesDataDto, EmployeesData>().ReverseMap();
-        CreateMap<PenalityDto, Penalities>().ReverseMap();
+        CreateMap<PenalityDto, Penalities>().ReverseMap()
+        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Users.Name)).ReverseMap();
+
         // .ForPath(dest => dest.Users.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
 
         CreateMap<VacationRecords,VacationRecordDto>()
-       .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>src.Users.UserName )).ReverseMap();
+       .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>src.Users.Name )).ReverseMap();
 
         CreateMap<CreateVacationRecordDto, VacationRecords>();
         CreateMap<CreateRequestCycleDto, RequestCycle>().ReverseMap();

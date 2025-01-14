@@ -24,6 +24,7 @@ namespace ExpressMs.RectuitmentCo
         public string MobilePhone { set; get; }
         [Required]
         public string WhatsappPhone { set; get; }
+        public string Company { set; get; }
 
         public Gender? Gender { set; get; }
         public FormType? FormType { set; get; }

@@ -17,6 +17,7 @@ using ExpressMs.Recruitment;
 using Microsoft.EntityFrameworkCore;
 using ExpressMs.Employees;
 using ExpressMs.Requests;
+using ExpressMs.Vacations;
 
 namespace ExpressMs.EntityFrameworkCore;
 
@@ -89,7 +90,9 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
             options.Entity<EmployeesData>(orderOptions =>
             {
                 orderOptions.DefaultWithDetailsFunc = query => query
-                .Include(o => o.RecruitmentApplication).ThenInclude(o => o.Positions);
+                .Include(o => o.RecruitmentApplication).ThenInclude(o => o.Positions)
+                .Include(O => O.Users);
+                
 
             });
             options.Entity<Request>(orderOptions =>
@@ -98,6 +101,13 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
                 .Include(o => o.RequestStates);
 
             });
+            options.Entity<VacationRecords>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.Users);
+
+            });
+
         });
     }
 }

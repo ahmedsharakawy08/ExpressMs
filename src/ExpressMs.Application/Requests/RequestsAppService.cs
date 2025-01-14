@@ -41,5 +41,10 @@ namespace ExpressMs.Requests
             await _requestRepo.UpdateAsync(request);
             await _requestState.UpdateAsync(request.RequestState);
         }
+        public async Task DeleteRequest(Guid id)
+        {
+            await _requestRepo.DeleteAsync(obj => obj.Id == id);
+        }
+
     }
 }
