@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using ExpressMs.Employees;
 using ExpressMs.Payroll.Dtos;
 using ExpressMs.PayrollEntities;
@@ -8,6 +9,7 @@ using ExpressMs.Requests;
 using ExpressMs.Vacation;
 using ExpressMs.Vacations;
 using System;
+using Volo.Abp.Identity;
 
 namespace ExpressMs;
 
@@ -56,7 +58,9 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<CreateVacationRecordDto, VacationRecords>();
         CreateMap<CreateRequestCycleDto, RequestCycle>().ReverseMap();
         CreateMap<UpdateVacationRecordDto, VacationRecords>();
-        
+        CreateMap<EditUserDto, EmployeesData>();
+        CreateMap<EditUserDto, IdentityUser>();
+
 
 
 

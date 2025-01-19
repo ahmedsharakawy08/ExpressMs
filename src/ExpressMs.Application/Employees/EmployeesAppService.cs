@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
+using Volo.Abp.ObjectMapping;
 
 namespace ExpressMs.Users
 {
@@ -15,11 +16,15 @@ namespace ExpressMs.Users
     {
         private readonly IRepository<EmployeesData,Guid> _employeesRepo;
         private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
+        private readonly IIdentityUserRepository _userRepo;
         public EmployeesAppService(IRepository<EmployeesData, Guid> employeesRepo
-            , IRepository<RecruitmentApplication> recruitmentAppRepo)
+            , IRepository<RecruitmentApplication> recruitmentAppRepo,
+            IIdentityUserRepository userRepo)
         {
             _employeesRepo = employeesRepo;
             _recruitmentAppRepo = recruitmentAppRepo;
+            _userRepo= userRepo;
+
         }
         public async Task<EmployeesDataDto>GetEmployeeByIdAsync(Guid  Id)
         {
@@ -44,5 +49,15 @@ namespace ExpressMs.Users
             await _recruitmentAppRepo.UpdateAsync(app);
         }
 
+        public async Task UpdateUser(EditUserDto input)
+        {
+            _employeesRepo.DisableTracking();
+            var employee = await _employeesRepo.GetAsync(obj => obj.Id == input.UserId, true);
+            var empMap = ObjectMapper.Map<EditUserDto, EmployeesData>(input);
+            var user = await _userRepo.GetAsync(input.UserId);
+            var userMap = ObjectMapper.Map<EditUserDto, IdentityUser>(input);
+            await _employeesRepo.UpdateAsync(empMap);
+            await _userRepo.UpdateAsync(userMap);
+        }
     }
 }

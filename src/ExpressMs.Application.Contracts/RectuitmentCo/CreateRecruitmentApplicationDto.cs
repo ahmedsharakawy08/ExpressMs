@@ -21,7 +21,10 @@ namespace ExpressMs.RectuitmentCo
         public string MobilePhone { set; get; }
         [Required]
         public string WhatsappPhone { set; get; }
-
+        [Required]
+        public double AnnualRecord { set; get; }
+        [Required]
+        public double CasualRecord { set; get; }
         public Gender? Gender { set; get; }
         public FormType? FormType { set; get; }
         [Required]

@@ -36,6 +36,8 @@ namespace ExpressMs.Recruitment
         public string NationalIdDate { set; get; }
         public string Nationality { set; get; }
         public int KidsNumber { set; get; }
+        public double AnnualRecord { set; get; }
+        public double CasualRecord { set; get; }
         public DateTime DateToRecieveDocs { set; get; }
         public double SafetyResult { set; get; }
         public DateTime ActualStartDate { set; get; }

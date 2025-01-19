@@ -24,13 +24,14 @@ namespace ExpressMs.Requests
     public class HiringRequestConfiguration : BaseRequestConfig
     {
         public override RequestsTypes RequestsTypes => RequestsTypes.Vacation;
-
         public Guid PositionId { set; get; }
         public HiringRequestJobType HiringRequestJobType { set; get; }
         public Guid  DirectSupervisor { set; get; }
         public string JobTitle { set; get; }
         public DateTime StartingData { set; get; }
         public string JobRequirment { set; get; }
+        public Guid Requester { set; get; }
+
     }
 
     public static class AddDataFlowJsonConverterBuilderExtension
