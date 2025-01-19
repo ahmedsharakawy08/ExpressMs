@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Twilio.Http;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Identity;
 
 namespace ExpressMs.Requests
 {
@@ -13,7 +14,9 @@ namespace ExpressMs.Requests
         public string ApprovalCycle { set; get; }
         public string RequestConfigurations {set;get;}    
         public RequestsStatus Status { set; get; }
-        [NotMapped]
+        public Guid RequesterId { get; set; }
+        [ForeignKey("RequesterId")]
+        public virtual IdentityUser Users { set; get; }
         public virtual RequestStates RequestState { get; set; }
         public ICollection<RequestStates> RequestStates { set; get; }
         public Request(Guid id,RequestsTypes requestsTypes, string approvalCycle, string requestConfigurations,

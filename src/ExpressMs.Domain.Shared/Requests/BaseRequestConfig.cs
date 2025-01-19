@@ -10,12 +10,11 @@ namespace ExpressMs.Requests
     public abstract class BaseRequestConfig
     {
         public abstract RequestsTypes RequestsTypes { get; }
+        public Guid UserId { set; get; }
     }
     public  class VacationRequestConfiguration: BaseRequestConfig
     {
         public override RequestsTypes RequestsTypes => RequestsTypes.Vacation;
-
-        public Guid UserId { set; get; }
         public DateTime From { set; get; }
         public DateTime To { set; get; }
         public VacationType VacationType {  set; get; }
@@ -30,7 +29,6 @@ namespace ExpressMs.Requests
         public string JobTitle { set; get; }
         public DateTime StartingData { set; get; }
         public string JobRequirment { set; get; }
-        public Guid Requester { set; get; }
 
     }
 

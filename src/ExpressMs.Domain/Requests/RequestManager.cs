@@ -35,6 +35,12 @@ namespace ExpressMs.Requests
         public async Task<Request>  CreateRequest(BaseRequestConfig baseRequestConfig,string config)
         {
             var request=new Request();
+            var user = await _employeesRepo.GetAsync(obj => obj.Users.Id == baseRequestConfig.UserId, true);
+            var deptId = user.RecruitmentApplication.Positions.DepartmentId;
+
+            var requestcycle = await _requestCycleRepo.GetAsync(obj => obj.DeptId == deptId
+            && obj.RequestTypes == RequestsTypes.Vacation);
+           
             if (baseRequestConfig is VacationRequestConfiguration vacation)
             {
                 var available =await  _vacrecordManager.CheckRecordAvailable
@@ -44,13 +50,15 @@ namespace ExpressMs.Requests
                 {
                     throw new UserFriendlyException("you donot have enough record");
                 }
-                var user = await _employeesRepo.GetAsync(obj => obj.Users.Id == vacation.UserId, true);
-                var deptId = user.RecruitmentApplication.Positions.DepartmentId;
-                var requestcycle = await _requestCycleRepo.GetAsync(obj => obj.DeptId == deptId);
-
                  request = new Request(Guid.NewGuid(),RequestsTypes.Vacation, requestcycle.Cycle,
                                          config, RequestsStatus.Pending);
             }
+            if (baseRequestConfig is HiringRequestConfiguration hiring)
+            {
+                request = new Request(Guid.NewGuid(), RequestsTypes.Hiring, requestcycle.Cycle,
+                                        config, RequestsStatus.Pending);
+            }
+            
             return request;
         }
         public async Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status)
