@@ -20,4 +20,11 @@ namespace ExpressMs.Vacation
         public double Annual { get; set; }
         public double Casual { get; set; }
     }
+    public class UpdateVacationRecordDto
+    {
+        public Guid Id { set; get; }
+        public Guid UserId { get; set; }
+        public double Annual { get; set; }
+        public double Casual { get; set; }
+    }
 }

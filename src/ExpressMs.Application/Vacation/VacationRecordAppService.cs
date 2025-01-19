@@ -25,7 +25,8 @@ namespace ExpressMs.Vacation
         public async Task CreateWithList(List<CreateVacationRecordDto> input)
         {
             var data = ObjectMapper.Map<List<CreateVacationRecordDto>, List<VacationRecords>>(input);
-            var existData = await _vacationRecords.GetListAsync();
+            var existData = await _vacationRecords
+                .GetListAsync();
             await _vacationRecords.DeleteManyAsync(existData);
             await _vacationRecords.InsertManyAsync(data);
         }
@@ -42,10 +43,11 @@ namespace ExpressMs.Vacation
             var data = ObjectMapper.Map<VacationRecords,VacationRecordDto>(vacation);
             return data;
         }
-        public async Task EditByUserId(CreateVacationRecordDto input)
+        public async Task UpdateAsync(UpdateVacationRecordDto input)
         {
-            var vacation = await _vacationRecords.GetAsync(obj => obj.UserId == input.UserId);
-            var data = ObjectMapper.Map<CreateVacationRecordDto, VacationRecords>(input);
+              _vacationRecords.DisableTracking();
+            var vacation = _vacationRecords.GetListAsync(obj => obj.UserId == input.UserId);
+            var data = ObjectMapper.Map<UpdateVacationRecordDto, VacationRecords>(input);
             await _vacationRecords.UpdateAsync(data);
         }
         public async Task DeleteVacationRecord(Guid  id)

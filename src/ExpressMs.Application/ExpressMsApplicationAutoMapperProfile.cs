@@ -55,7 +55,10 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
 
         CreateMap<CreateVacationRecordDto, VacationRecords>();
         CreateMap<CreateRequestCycleDto, RequestCycle>().ReverseMap();
+        CreateMap<UpdateVacationRecordDto, VacationRecords>();
         
+
+
 
     }
 }
