@@ -17,6 +17,7 @@ namespace ExpressMs.Requests
         public Guid RequesterId { get; set; }
         [ForeignKey("RequesterId")]
         public virtual IdentityUser Users { set; get; }
+        [NotMapped]
         public virtual RequestStates RequestState { get; set; }
         public ICollection<RequestStates> RequestStates { set; get; }
         public Request(Guid id,RequestsTypes requestsTypes, string approvalCycle, string requestConfigurations,

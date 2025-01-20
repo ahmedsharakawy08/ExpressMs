@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Http;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Users;
 
@@ -45,6 +46,25 @@ namespace ExpressMs.Requests
         {
             await _requestRepo.DeleteAsync(obj => obj.Id == id);
         }
+        public async Task<List<Request>> GetMyRequests(Guid userId)
+        {
+           List<Request>requestList=new List<Request>();  
+           var allRequests= await _requestRepo.GetListAsync(true);
+           var allstates=await _requestState.GetListAsync(obj=>obj.Current== userId);
+           var allstateReqId = allstates.Select(obj => obj.ReqId);
+           var filteredRequests = allRequests.Where(r => allstateReqId.Contains(r.Id)).ToList();
+            //foreach (var request in allRequests)
+            //{
+            //    foreach (var state in allstates)
+            //    {
+            //        if(state.ReqId== request.Id)
+            //        {
+            //            requestList.Add(request);
+            //        }
+            //    }
+            //}
+            return requestList;
 
+        }
     }
 }
