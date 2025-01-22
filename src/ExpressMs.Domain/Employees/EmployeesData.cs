@@ -55,6 +55,7 @@ namespace ExpressMs.Employees
         public Guid ApplicationId { set; get; }
         [JsonIgnore]
         public virtual RecruitmentApplication RecruitmentApplication { set; get; }
+        public DateTime HiringDate { set; get; }
 
 
     }

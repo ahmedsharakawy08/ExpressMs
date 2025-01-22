@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressMs.Recruitment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,13 @@ namespace ExpressMs.GenericEntities
     {
         public string GovernorateNameAr { set; get; }
         public string GovernorateNameEn { set; get; }
-
-      public  Governorate(string governorateNameAr, string governorateNameEn)
+        public ICollection<City> Cities { set; get; }
+        public Governorate()
         {
-            GovernorateNameAr = governorateNameAr;
-            GovernorateNameEn = governorateNameEn;
+            Cities = new HashSet<City>();
         }
+
+
 
     }
 }

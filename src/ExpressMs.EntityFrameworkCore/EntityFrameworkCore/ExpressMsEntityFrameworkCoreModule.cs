@@ -113,6 +113,12 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
                 .Include(o => o.Users);
 
             });
+            options.Entity<PapersToUsers>(orderOptions =>
+            {
+                orderOptions.DefaultWithDetailsFunc = query => query
+                .Include(o => o.Users);
+
+            });
 
         });
     }

@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250121234510_drop cities and governorate")]
+    partial class dropcitiesandgovernorate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,9 +106,6 @@ namespace ExpressMs.Migrations
 
                     b.Property<double>("GrossSalary")
                         .HasColumnType("float");
-
-                    b.Property<DateTime>("HiringDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("HomePhone")
                         .HasColumnType("nvarchar(max)");
@@ -227,49 +227,6 @@ namespace ExpressMs.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ExPenalities", (string)null);
-                });
-
-            modelBuilder.Entity("ExpressMs.GenericEntities.City", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GovernorateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GovernorateId");
-
-                    b.ToTable("ExCities", (string)null);
-                });
-
-            modelBuilder.Entity("ExpressMs.GenericEntities.Governorate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("GovernorateNameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GovernorateNameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExGovernorates", (string)null);
                 });
 
             modelBuilder.Entity("ExpressMs.PayrollEntities.PayrollPaySlip", b =>
@@ -3275,17 +3232,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("ExpressMs.GenericEntities.City", b =>
-                {
-                    b.HasOne("ExpressMs.GenericEntities.Governorate", "Governorate")
-                        .WithMany("Cities")
-                        .HasForeignKey("GovernorateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Governorate");
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.ApplicationAddressData", b =>
                 {
                     b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
@@ -3613,11 +3559,6 @@ namespace ExpressMs.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExpressMs.GenericEntities.Governorate", b =>
-                {
-                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("ExpressMs.Recruitment.Department", b =>

@@ -1,6 +1,7 @@
 ﻿using ExpressMs.Employees;
 using ExpressMs.Recruitment;
 using ExpressMs.RectuitmentCo;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,31 @@ namespace ExpressMs.Users
 {
     public class EmployeesAppService : ExpressMsAppService
     {
-        private readonly IRepository<EmployeesData,Guid> _employeesRepo;
+        private readonly IRepository<EmployeesData, Guid> _employeesRepo;
         private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
         private readonly IIdentityUserRepository _userRepo;
+        private readonly IdentityUserManager _userManager;
+        private readonly IRepository<EmployeesPapersTypes> _employeePaperType;
+        private readonly IRepository<PapersToUsers> _papersToUsers;
         public EmployeesAppService(IRepository<EmployeesData, Guid> employeesRepo
             , IRepository<RecruitmentApplication> recruitmentAppRepo,
-            IIdentityUserRepository userRepo)
+            IIdentityUserRepository userRepo,
+            IdentityUserManager userManager,
+            IRepository<EmployeesPapersTypes> employeePaperType,
+            IRepository<PapersToUsers> papersToUsers)
         {
             _employeesRepo = employeesRepo;
             _recruitmentAppRepo = recruitmentAppRepo;
-            _userRepo= userRepo;
+            _userRepo = userRepo;
+            _userManager = userManager;
+            _employeePaperType = employeePaperType;
+            _papersToUsers = papersToUsers;
 
         }
-        public async Task<EmployeesDataDto>GetEmployeeByIdAsync(Guid  Id)
+        public async Task<EmployeesDataDto> GetEmployeeByIdAsync(Guid Id)
         {
-            var Employee = await _employeesRepo.GetAsync(obj => obj.UserId == Id,true);
-            var data = ObjectMapper.Map<EmployeesData,EmployeesDataDto >(Employee);
+            var Employee = await _employeesRepo.GetAsync(obj => obj.UserId == Id, true);
+            var data = ObjectMapper.Map<EmployeesData, EmployeesDataDto>(Employee);
             return data;
         }
         public async Task<List<EmployeesDataDto>> GetEmployeesListAsync()
@@ -39,7 +49,7 @@ namespace ExpressMs.Users
             return data;
         }
 
-        public async Task DeactIvateEmployee(Guid userId, Guid appId)
+        public async Task DeactivateEmployee(Guid userId, Guid appId)
         {
             var app = await _recruitmentAppRepo.GetAsync(obj => obj.Id == appId);
             var employee = await _employeesRepo.GetAsync(obj => obj.Id == userId, true);
@@ -58,6 +68,30 @@ namespace ExpressMs.Users
             var userMap = ObjectMapper.Map<EditUserDto, IdentityUser>(input);
             await _employeesRepo.UpdateAsync(empMap);
             await _userRepo.UpdateAsync(userMap);
+        }
+        public async Task AddUsersList(List<CreateUserDto> input)
+        {
+            var paperTypes = await _employeePaperType.GetListAsync();
+            List<PapersToUsers> papersList = new List<PapersToUsers>();
+            var data = ObjectMapper.Map<List<CreateUserDto>, List<EmployeesData>>(input);
+            foreach (var usertocreate in input)
+            {
+                var users = await _userRepo.GetCountAsync();
+                string usercode = (users + 1).ToString();
+                IdentityUser user = new IdentityUser(Guid.NewGuid(), usercode, usertocreate.Email);
+                user.Name = usertocreate.FullEnglishName;
+                user.SetPhoneNumber(usertocreate.MobilePhone, true);
+                user.SetIsActive(true);
+                var userAdded = await _userManager.CreateAsync(user, "@Aa" + usertocreate.NationalID);
+
+                foreach (var paperType in paperTypes)
+                {
+                    var paper = new PapersToUsers(user.Id, paperType.Id, false, "");
+                    papersList.Add(paper);
+                }
+            }
+            await _employeesRepo.InsertManyAsync(data);
+            await _papersToUsers.InsertManyAsync(papersList);
         }
     }
 }

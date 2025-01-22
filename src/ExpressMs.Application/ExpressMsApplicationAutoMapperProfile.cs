@@ -60,6 +60,9 @@ public class ExpressMsApplicationAutoMapperProfile : Profile
         CreateMap<UpdateVacationRecordDto, VacationRecords>();
         CreateMap<EditUserDto, EmployeesData>();
         CreateMap<EditUserDto, IdentityUser>();
+        CreateMap<PapersToUsers, PapersToUserDto>()
+        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Users.Name)).ReverseMap();
+        CreateMap<CreateUserDto, EmployeesData>();
 
 
 

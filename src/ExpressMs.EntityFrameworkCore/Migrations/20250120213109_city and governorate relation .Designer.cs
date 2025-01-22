@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250120213109_city and governorate relation ")]
+    partial class cityandgovernoraterelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,9 +106,6 @@ namespace ExpressMs.Migrations
 
                     b.Property<double>("GrossSalary")
                         .HasColumnType("float");
-
-                    b.Property<DateTime>("HiringDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("HomePhone")
                         .HasColumnType("nvarchar(max)");
@@ -237,7 +237,10 @@ namespace ExpressMs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GovernorateId")
+                    b.Property<Guid>("GovernorateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("GovernorateId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -246,7 +249,7 @@ namespace ExpressMs.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GovernorateId");
+                    b.HasIndex("GovernorateId1");
 
                     b.ToTable("ExCities", (string)null);
                 });
@@ -3279,7 +3282,7 @@ namespace ExpressMs.Migrations
                 {
                     b.HasOne("ExpressMs.GenericEntities.Governorate", "Governorate")
                         .WithMany("Cities")
-                        .HasForeignKey("GovernorateId")
+                        .HasForeignKey("GovernorateId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
