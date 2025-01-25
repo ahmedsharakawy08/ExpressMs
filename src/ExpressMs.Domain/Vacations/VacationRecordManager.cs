@@ -3,10 +3,11 @@ using System;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Domain.Services;
 
 namespace ExpressMs.Vacations
 {
-    public class VacationRecordManager : IVacationRecordManager,ITransientDependency
+    public class VacationRecordManager : IVacationRecordManager, ITransientDependency
     {
         private readonly IRepository<VacationRecords> _vacationRepo;
         public VacationRecordManager(IRepository<VacationRecords> vacationRepo)

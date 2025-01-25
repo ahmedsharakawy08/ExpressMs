@@ -112,7 +112,7 @@ namespace ExpressMs.RecuruitmentApplication
                 HiringDate=App.ActualStartDate
 
             };
-            var existEmp = _employeesRepo.GetAsync(obj => obj.UserId == user.Id);
+            var existEmp = await  _employeesRepo.FindAsync (obj => obj.UserId == user.Id);
             if (existEmp == null)
                 await _employeesRepo.InsertAsync(emp);
 

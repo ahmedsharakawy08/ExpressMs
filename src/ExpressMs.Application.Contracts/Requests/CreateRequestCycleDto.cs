@@ -12,4 +12,23 @@ namespace ExpressMs.Requests
         public RequestsTypes RequestTypes { set; get; }
         public Guid DeptId { set; get; }
     }
+    public class GetAllRequestsDto
+    {
+        public RequestsTypes RequestsTypes { get; set; }
+        public string ApprovalCycle { set; get; }
+        public string RequestConfigurations { set; get; }
+        public RequestsStatus Status { set; get; }
+        public Guid RequesterId { get; set; }
+        public Guid RequesterName { get; set; }
+        public string CurrentApproval { set; get; }
+    }
+    public class GetRequestToApproveDto
+    {
+        public Guid Id { set; get; }
+        public RequestsTypes RequestsTypes { get; set; }
+        public string RequestConfigurations { set; get; }
+        public RequestsStatus Status { set; get; }
+        public Guid RequesterId { get; set; }
+        public string RequesterName { get; set; }
+    }
 }

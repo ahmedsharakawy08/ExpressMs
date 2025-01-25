@@ -56,7 +56,8 @@ public class ExpressMsDbContext :
     public DbSet<RequestStates> RequestSatates { set; get; }
     public DbSet<RequestCycle> RequestCycle { set; get; }
     public DbSet<Request> Request { set; get; }
-    
+    public DbSet<PapersToUsers> PapersToUsers { set; get; }
+    public DbSet<EmployeesPapersTypes> RequEmployeesPapersTypesest { set; get; }
 
 
 
@@ -124,6 +125,32 @@ public class ExpressMsDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<EmployeesData>()
+          .HasOne(e => e.Position)
+          .WithMany() // Assuming Position doesn't have a collection of EmployeesData
+          .HasForeignKey(e => e.PositionId)
+          .OnDelete(DeleteBehavior.NoAction); // or DeleteBehavior.Restrict
+
+        // Configuring the foreign key for 'ApplicationId' with NoAction or Restrict delete behavior
+        builder.Entity<EmployeesData>()
+            .HasOne(e => e.RecruitmentApplication)
+            .WithMany() // Assuming RecruitmentApplication doesn't have a collection of EmployeesData
+            .HasForeignKey(e => e.ApplicationId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<RequestStates>()
+       .HasOne(e => e.Users)
+       .WithMany() // Assuming RecruitmentApplication doesn't have a collection of EmployeesData
+       .HasForeignKey(e => e.UserId)
+       .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<Request>()
+        .HasOne(e => e.Users)
+        .WithMany() // Assuming RecruitmentApplication doesn't have a collection of EmployeesData
+        .HasForeignKey(e => e.RequesterId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+
         builder.Entity<PayrollPaySlip>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "PayrollPaySlips", ExpressMsConsts.DbSchema);
@@ -247,7 +274,15 @@ public class ExpressMsDbContext :
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "RequestStates", ExpressMsConsts.DbSchema);
         });
+        builder.Entity<EmployeesPapersTypes>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "EmployeesPapersTypes", ExpressMsConsts.DbSchema);
+        });
 
+        builder.Entity<PapersToUsers>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "PapersToUsers", ExpressMsConsts.DbSchema);
+        });
 
     }
 }

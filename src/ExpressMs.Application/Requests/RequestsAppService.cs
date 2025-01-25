@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Twilio.Http;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.ObjectMapping;
 using Volo.Abp.Users;
 
 namespace ExpressMs.Requests
@@ -46,11 +47,11 @@ namespace ExpressMs.Requests
         {
             await _requestRepo.DeleteAsync(obj => obj.Id == id);
         }
-        public async Task<List<Request>> GetMyRequests(Guid userId)
+        public async Task<List<GetRequestToApproveDto>> GetMyRequestsToApprove(Guid userId)
         {
            List<Request>requestList=new List<Request>();  
            var allRequests= await _requestRepo.GetListAsync(true);
-           var allstates=await _requestState.GetListAsync(obj=>obj.Current== userId);
+           var allstates=await _requestState.GetListAsync(obj=>obj.UserId == userId);
            var allstateReqId = allstates.Select(obj => obj.ReqId);
            var filteredRequests = allRequests.Where(r => allstateReqId.Contains(r.Id)).ToList();
             //foreach (var request in allRequests)
@@ -63,7 +64,23 @@ namespace ExpressMs.Requests
             //        }
             //    }
             //}
-            return requestList;
+            var data = ObjectMapper.Map<List<Request>, List<GetRequestToApproveDto>>(filteredRequests);
+            return data;
+
+        }
+        public async Task<List<Request>> GetMyRequests(Guid userId)
+        {
+            
+            var allRequests = await _requestRepo.GetListAsync(obj=>obj.RequesterId==userId);
+            return allRequests;
+
+        }
+
+        public async Task<List<GetRequestToApproveDto>> GetallRequests()
+        {
+            var allRequests = await _requestRepo.GetListAsync(true);
+            var data = ObjectMapper.Map<List<Request>, List<GetRequestToApproveDto>>(allRequests);
+            return data;
 
         }
     }

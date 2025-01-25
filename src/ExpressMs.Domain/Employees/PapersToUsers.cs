@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.Identity;
@@ -17,11 +18,12 @@ namespace ExpressMs.Employees
         public virtual IdentityUser Users { set; get; }
         public Guid EmployeesPapersTypeId { get; set; }
         [ForeignKey("EmployeesPapersTypeId")]
+        [JsonIgnore]
         public virtual EmployeesPapersTypes EmployeesPapersTypes { set; get; }
         public bool Status { set; get; }
         public string Content { set; get; }
 
-        public PapersToUsers(Guid userId, Guid employeesPapersTypeId,bool status,string content)
+        public PapersToUsers(Guid userId, Guid employeesPapersTypeId, bool status, string content)
         {
             UserId = userId;
             EmployeesPapersTypeId = employeesPapersTypeId;

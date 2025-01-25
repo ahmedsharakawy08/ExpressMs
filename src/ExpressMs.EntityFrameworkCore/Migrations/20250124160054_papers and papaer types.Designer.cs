@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250124160054_papers and papaer types")]
+    partial class papersandpapaertypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,8 +185,6 @@ namespace ExpressMs.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
-
-                    b.HasIndex("PositionId");
 
                     b.HasIndex("UserId");
 
@@ -1463,6 +1464,9 @@ namespace ExpressMs.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CreatorId");
 
+                    b.Property<Guid>("Current")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("LastModificationTime");
@@ -1477,14 +1481,9 @@ namespace ExpressMs.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ReqId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ExRequestStates", (string)null);
                 });
@@ -3311,13 +3310,7 @@ namespace ExpressMs.Migrations
                     b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ExpressMs.Recruitment.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Volo.Abp.Identity.IdentityUser", "Users")
@@ -3325,8 +3318,6 @@ namespace ExpressMs.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Position");
 
                     b.Navigation("RecruitmentApplication");
 
@@ -3533,7 +3524,7 @@ namespace ExpressMs.Migrations
                     b.HasOne("Volo.Abp.Identity.IdentityUser", "Users")
                         .WithMany()
                         .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Users");
@@ -3547,15 +3538,7 @@ namespace ExpressMs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Volo.Abp.Identity.IdentityUser", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Requests");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ExpressMs.Vacations.VacationRecords", b =>

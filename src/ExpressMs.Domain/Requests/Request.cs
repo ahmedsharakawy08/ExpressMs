@@ -21,7 +21,7 @@ namespace ExpressMs.Requests
         public virtual RequestStates RequestState { get; set; }
         public ICollection<RequestStates> RequestStates { set; get; }
         public Request(Guid id,RequestsTypes requestsTypes, string approvalCycle, string requestConfigurations,
-            RequestsStatus status)
+            RequestsStatus status,Guid  requesterId)
         {
             RequestStates = new HashSet<RequestStates>();
             Id = id;
@@ -29,6 +29,7 @@ namespace ExpressMs.Requests
             ApprovalCycle = approvalCycle;
             RequestConfigurations= requestConfigurations;
             Status = status;
+            RequesterId = requesterId ;
             CreateRequestState(Id, approvalCycle);
         }
         public void CreateRequestState(Guid id,string approvalCycle)

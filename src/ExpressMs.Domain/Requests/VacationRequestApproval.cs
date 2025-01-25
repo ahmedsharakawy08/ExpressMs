@@ -37,7 +37,7 @@ namespace ExpressMs.Requests
             var state = request.RequestStates.Where(obj =>obj.Status == RequestsStatus.Pending)
                                             .First();
             var conf = (VacationRequestConfiguration)config;
-            if (_currentUser.Id != state.Current)
+            if (_currentUser.Id != state.UserId)
             {
                 throw new UserFriendlyException("you donot have permission to approve this request");
             }
@@ -54,7 +54,7 @@ namespace ExpressMs.Requests
             var cycle = await _requestCycleRepo.GetAsync(obj => obj.RequestTypes == request.RequestsTypes);
             var cycleArray = cycle.Cycle.Split(";");
             var current = Guid.Parse(cycleArray[cycleArray.Length - 1]);
-            if (current == state.Current)
+            if (current == state.UserId)
             {
                await  _vacationRecord.SubtractRecord(conf.UserId, conf.VacationType, conf.NoOfDays);
                 request.Status = status;
@@ -63,8 +63,8 @@ namespace ExpressMs.Requests
 
             var requeststate = new RequestStates();
             requeststate.Status = RequestsStatus.Pending;
-            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.Current);
-            requeststate.Current = Guid.Parse(cycleArray[index + 1]);
+            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
+            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
             await _requestState.InsertAsync(requeststate);
             return request;
         }

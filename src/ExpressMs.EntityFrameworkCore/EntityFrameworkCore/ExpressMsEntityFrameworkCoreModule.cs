@@ -90,15 +90,17 @@ public class ExpressMsEntityFrameworkCoreModule : AbpModule
             options.Entity<EmployeesData>(orderOptions =>
             {
                 orderOptions.DefaultWithDetailsFunc = query => query
-                .Include(o => o.RecruitmentApplication).ThenInclude(o => o.Positions)
-                .Include(O => O.Users);
+                .Include(o => o.RecruitmentApplication)
+                .Include(O => O.Users)
+                .Include(o=>o.Position);
                 
 
             });
             options.Entity<Request>(orderOptions =>
             {
                 orderOptions.DefaultWithDetailsFunc = query => query
-                .Include(o => o.RequestStates);
+                .Include(o => o.RequestStates)
+                .Include(o => o.Users);
 
             });
             options.Entity<VacationRecords>(orderOptions =>

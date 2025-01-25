@@ -30,6 +30,8 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using ExpressMs.Messages;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ExpressMs;
 
@@ -81,6 +83,7 @@ public class ExpressMsHttpApiHostModule : AbpModule
         {
             options.IsDynamicClaimsEnabled = true;
         });
+
     }
 
     private void ConfigureBundles()
@@ -143,18 +146,64 @@ public class ExpressMsHttpApiHostModule : AbpModule
 
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
     {
-        context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"]!,
-            new Dictionary<string, string>
-            {
-                    {"ExpressMs", "ExpressMs API"}
-            },
-            options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ExpressMs API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
-            });
+        //context.Services.AddAbpSwaggerGenWithOAuth(
+        //    configuration["AuthServer:Authority"]!,
+        //    new Dictionary<string, string>
+        //    {
+        //            {"ExpressMs", "ExpressMs API"}
+        //    },
+        //    options =>
+        //    {
+        //        options.SwaggerDoc("v1", new OpenApiInfo { Title = "ExpressMs API", Version = "v1" });
+        //        options.DocInclusionPredicate((docName, description) => true);
+        //        options.CustomSchemaIds(type => type.FullName);
+        //    });
+        context.Services
+     .AddAbpSwaggerGen()
+     .AddSwaggerGen(
+         options =>
+         {
+             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+             {
+                 Type = SecuritySchemeType.OAuth2,
+                 Flows = new OpenApiOAuthFlows
+                 {
+                     AuthorizationCode = new OpenApiOAuthFlow
+                     {
+                         AuthorizationUrl = new Uri($"/connect/authorize", UriKind.Relative),
+                         Scopes = new Dictionary<string, string>
+                         {
+                             {"ExpressMs", "Express API"}
+                         },
+                         TokenUrl = new Uri($"/connect/token", UriKind.Relative)
+                     }
+                 }
+
+             });
+
+             options.AddSecurityRequirement(new OpenApiSecurityRequirement
+             {
+                     {
+                         new OpenApiSecurityScheme
+                         {
+                             Reference = new OpenApiReference
+                             {
+                                 Type = ReferenceType.SecurityScheme,
+                                 Id = "oauth2"
+                             }
+                         },
+                         Array.Empty<string>()
+                     }
+             });
+             Action<SwaggerGenOptions> setupAction = options =>
+             {
+                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Mercury API", Version = "v1" });
+                 options.DocInclusionPredicate((docName, description) => true);
+                 options.CustomSchemaIds(type => type.FullName);
+               //  options.OperationFilter<SwaggerFileOperationFilter>();
+             };
+             setupAction?.Invoke(options);
+         });
     }
 
     private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
@@ -194,6 +243,7 @@ public class ExpressMsHttpApiHostModule : AbpModule
             app.UseErrorPage();
         }
 
+       // app.UseHttpsRedirection();
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
@@ -210,15 +260,23 @@ public class ExpressMsHttpApiHostModule : AbpModule
         app.UseAuthorization();
 
         app.UseSwagger();
-        app.UseAbpSwaggerUI(c =>
+        //app.UseAbpSwaggerUI(c =>
+        //{
+        //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExpressMs API");
+
+        //    var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
+        //    c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+        //    c.OAuthScopes("ExpressMs");
+        //});
+        app.UseAbpSwaggerUI(options =>
         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExpressMs API");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "ExpressMs API");
 
             var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
-            c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            c.OAuthScopes("ExpressMs");
+            options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+            options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
+            options.OAuthScopes("ExpressMs");
         });
-
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

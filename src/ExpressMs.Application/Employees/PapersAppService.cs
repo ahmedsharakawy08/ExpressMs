@@ -9,17 +9,17 @@ namespace ExpressMs.Employees
 {
     public class PapersAppService : ExpressMsAppService
     {
-        private readonly IRepository<EmployeesPapersTypes> _employeePaperType;
-        private readonly IRepository<PapersToUsers> _paperToUser;
-        public PapersAppService(IRepository<EmployeesPapersTypes> employeePaperType
-            , IRepository<PapersToUsers> paperToUser)
+        private readonly IRepository<EmployeesPapersTypes,Guid > _employeePaperType;
+        private readonly IRepository<PapersToUsers,Guid > _paperToUser;
+        public PapersAppService(IRepository<EmployeesPapersTypes,Guid > employeePaperType
+            , IRepository<PapersToUsers,Guid > paperToUser)
         {
             _employeePaperType = employeePaperType;
             _paperToUser = paperToUser;
         }
         public async Task CreatePaperTypes(string type)
         {
-           var EmployeesPapersTypes = new EmployeesPapersTypes(type);
+          var EmployeesPapersTypes = new EmployeesPapersTypes(type);
           await _employeePaperType.InsertAsync(EmployeesPapersTypes);
         }
         public Task<List<EmployeesPapersTypes>> GetPapertypes()

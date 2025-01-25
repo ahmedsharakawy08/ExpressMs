@@ -32,7 +32,7 @@ namespace ExpressMs.Requests
             var state = request.RequestStates.Where(obj => obj.Status == RequestsStatus.Pending)
                                     .First();
             var conf = (HiringRequestConfiguration)config;
-            if (_currentUser.Id != state.Current)
+            if (_currentUser.Id != state.UserId)
             {
                 throw new UserFriendlyException("you donot have permission to approve this request");
             }
@@ -44,8 +44,8 @@ namespace ExpressMs.Requests
 
             var requeststate = new RequestStates();
             requeststate.Status = RequestsStatus.Pending;
-            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.Current);
-            requeststate.Current = Guid.Parse(cycleArray[index + 1]);
+            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
+            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
             await _requestState.InsertAsync(requeststate);
             return request;
         }

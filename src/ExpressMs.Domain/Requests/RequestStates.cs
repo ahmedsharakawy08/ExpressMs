@@ -15,15 +15,17 @@ namespace ExpressMs.Requests
         [ForeignKey("ReqId")]
         public virtual Request Requests { set; get; }
         public RequestsStatus Status { get; set; }
-        public Guid Current { set; get; }
+        public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual IdentityUser Users { set; get; }
         public RequestStates()
         {
         }
-        public RequestStates(Guid reqId, RequestsStatus status, Guid current)
+        public RequestStates(Guid reqId, RequestsStatus status, Guid userId)
         {
             ReqId=reqId;
             Status=status;
-            Current =current;
+            UserId = userId;
         }
     }
 }

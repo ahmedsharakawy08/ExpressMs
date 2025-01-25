@@ -34,6 +34,8 @@ namespace ExpressMs.Employees
 
         [ForeignKey("Position")]
         public Guid PositionId { set; get; }
+        [JsonIgnore]
+        public virtual Position Position { set; get; }
         public Guid DirectManager { set; get; }
         public string Nationality { set; get; }
         public int KidsNumber { set; get; }

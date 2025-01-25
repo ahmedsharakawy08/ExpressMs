@@ -21,19 +21,20 @@ namespace ExpressMs.Users
         private readonly IdentityUserManager _userManager;
         private readonly IRepository<EmployeesPapersTypes> _employeePaperType;
         private readonly IRepository<PapersToUsers> _papersToUsers;
-        public EmployeesAppService(IRepository<EmployeesData, Guid> employeesRepo
+        public EmployeesAppService(
+            IRepository<EmployeesData, Guid> employeesRepo
             , IRepository<RecruitmentApplication> recruitmentAppRepo,
             IIdentityUserRepository userRepo,
             IdentityUserManager userManager,
-            IRepository<EmployeesPapersTypes> employeePaperType,
-            IRepository<PapersToUsers> papersToUsers)
+          IRepository<EmployeesPapersTypes> employeePaperType,
+          IRepository<PapersToUsers> papersToUsers)
         {
             _employeesRepo = employeesRepo;
             _recruitmentAppRepo = recruitmentAppRepo;
             _userRepo = userRepo;
             _userManager = userManager;
-            _employeePaperType = employeePaperType;
-            _papersToUsers = papersToUsers;
+          _employeePaperType = employeePaperType;
+          _papersToUsers = papersToUsers;
 
         }
         public async Task<EmployeesDataDto> GetEmployeeByIdAsync(Guid Id)

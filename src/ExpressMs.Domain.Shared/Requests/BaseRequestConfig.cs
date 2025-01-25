@@ -22,7 +22,7 @@ namespace ExpressMs.Requests
     }
     public class HiringRequestConfiguration : BaseRequestConfig
     {
-        public override RequestsTypes RequestsTypes => RequestsTypes.Vacation;
+        public override RequestsTypes RequestsTypes => RequestsTypes.Hiring;
         public Guid PositionId { set; get; }
         public HiringRequestJobType HiringRequestJobType { set; get; }
         public Guid  DirectSupervisor { set; get; }

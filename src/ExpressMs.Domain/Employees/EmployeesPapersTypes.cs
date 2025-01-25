@@ -14,5 +14,9 @@ namespace ExpressMs.Employees
         {
             PaperName = paperName;
         }
+        public EmployeesPapersTypes()
+        {
+        
+        }
     }
 }
