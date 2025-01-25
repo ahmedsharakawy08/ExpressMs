@@ -20,6 +20,7 @@ namespace ExpressMs.Requests
         [NotMapped]
         public virtual RequestStates RequestState { get; set; }
         public ICollection<RequestStates> RequestStates { set; get; }
+        public Request() { }
         public Request(Guid id,RequestsTypes requestsTypes, string approvalCycle, string requestConfigurations,
             RequestsStatus status,Guid  requesterId)
         {
@@ -37,7 +38,7 @@ namespace ExpressMs.Requests
             var current = approvalCycle.Split(";");
             RequestState = new RequestStates(id, RequestsStatus.Pending, Guid.Parse(current[0]));
         }
-        public Request() { }
+  
         
     }
 }

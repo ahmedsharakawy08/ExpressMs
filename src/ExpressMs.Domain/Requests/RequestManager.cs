@@ -14,7 +14,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ExpressMs.Requests
 {
-    public class RequestManager : IRequestManager, ITransientDependency
+    public class RequestManager : IRequestManager
     {
         public readonly IRepository<EmployeesData> _employeesRepo;
         public readonly IRepository<RequestCycle> _requestCycleRepo;
@@ -41,6 +41,10 @@ namespace ExpressMs.Requests
         {
             var request = new Request();
             var user = await _employeesRepo.FindAsync(obj => obj.Users.Id == baseRequestConfig.UserId, true);
+            if(user==null)
+            {
+                throw new UserFriendlyException("User not found");
+            }
 
             var deptId = user.Position.DepartmentId;
 
