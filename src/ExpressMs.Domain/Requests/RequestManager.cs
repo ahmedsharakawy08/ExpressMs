@@ -41,7 +41,7 @@ namespace ExpressMs.Requests
         {
             var request = new Request();
             var user = await _employeesRepo.FindAsync(obj => obj.Users.Id == baseRequestConfig.UserId, true);
-            if(user==null)
+            if (user == null)
             {
                 throw new UserFriendlyException("User not found");
             }
@@ -66,29 +66,31 @@ namespace ExpressMs.Requests
                 }
 
                 request = new Request(Guid.NewGuid(), RequestsTypes.Vacation, requestcycle.Cycle,
-                                        config, RequestsStatus.Pending,vacation.UserId);
+                                        config, RequestsStatus.Pending, vacation.UserId);
             }
             if (baseRequestConfig is HiringRequestConfiguration hiring)
             {
                 request = new Request(Guid.NewGuid(), RequestsTypes.Hiring, requestcycle.Cycle,
-                                        config, RequestsStatus.Pending,hiring.UserId);
+                                        config, RequestsStatus.Pending, hiring.UserId);
             }
 
             return request;
         }
-        public async Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status)
+
+    
+    public async Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status)
+    {
+        switch (request.RequestsTypes)
         {
-            switch (request.RequestsTypes)
-            {
-                case RequestsTypes.Vacation:
-                    request = await _vacationRequestApproval.ProcessRequest(config, request, status);
-                    break;
-                case RequestsTypes.Hiring:
-                    request = await _hiringRequestApproval.ProcessRequest(config, request, status);
-                    break;
-            }
-
-            return request;
+            case RequestsTypes.Vacation:
+                request = await _vacationRequestApproval.ProcessRequest(config, request, status);
+                break;
+            case RequestsTypes.Hiring:
+                request = await _hiringRequestApproval.ProcessRequest(config, request, status);
+                break;
         }
+
+        return request;
     }
+}
 }

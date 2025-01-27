@@ -19,6 +19,7 @@ namespace ExpressMs.Requests
         private readonly JsonSerializerSettings DataFlowSerializerSettings
             = new JsonSerializerSettings().AddDataFlowJsonConverter();
         public readonly IRepository<Request> _requestRepo;
+        public readonly IRepository<EmployeesData> _employeeRepo;
         public readonly IRepository<RequestStates> _requestState;
         public RequestsAppService(IRequestManager requestManager,
             IRepository<Request> requestRepo,
@@ -54,16 +55,7 @@ namespace ExpressMs.Requests
            var allstates=await _requestState.GetListAsync(obj=>obj.UserId == userId);
            var allstateReqId = allstates.Select(obj => obj.ReqId);
            var filteredRequests = allRequests.Where(r => allstateReqId.Contains(r.Id)).ToList();
-            //foreach (var request in allRequests)
-            //{
-            //    foreach (var state in allstates)
-            //    {
-            //        if(state.ReqId== request.Id)
-            //        {
-            //            requestList.Add(request);
-            //        }
-            //    }
-            //}
+
             var data = ObjectMapper.Map<List<Request>, List<GetRequestToApproveDto>>(filteredRequests);
             return data;
 
@@ -73,7 +65,6 @@ namespace ExpressMs.Requests
             
             var allRequests = await _requestRepo.GetListAsync(obj=>obj.RequesterId==userId);
             return allRequests;
-
         }
 
         public async Task<List<GetRequestToApproveDto>> GetallRequests()

@@ -11,6 +11,7 @@ namespace ExpressMs.Requests
     {
         public abstract RequestsTypes RequestsTypes { get; }
         public Guid UserId { set; get; }
+        public string? UserName { set; get; }
     }
     public  class VacationRequestConfiguration: BaseRequestConfig
     {
@@ -19,16 +20,20 @@ namespace ExpressMs.Requests
         public DateTime To { set; get; }
         public VacationType VacationType {  set; get; }
         public double NoOfDays { set; get; }
+       
     }
     public class HiringRequestConfiguration : BaseRequestConfig
     {
         public override RequestsTypes RequestsTypes => RequestsTypes.Hiring;
         public Guid PositionId { set; get; }
+        public string DepartmentName { set; get; }
+        public string? PositionName { set; get; }
         public HiringRequestJobType HiringRequestJobType { set; get; }
         public Guid  DirectSupervisor { set; get; }
-        public string JobTitle { set; get; }
+        public string? DirectSupervisorName { set; get; }
+        public string? JobTitle { set; get; }
         public DateTime StartingData { set; get; }
-        public string JobRequirment { set; get; }
+        public string? JobRequirment { set; get; }
 
     }
 
