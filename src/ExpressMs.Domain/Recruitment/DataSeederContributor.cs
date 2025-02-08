@@ -15,50 +15,57 @@ namespace ExpressMs.Recruitment
     {
         private readonly IRepository<Governorate> _governorateRepo;
         private readonly IRepository<City> _cityRepository;
+        private readonly IRepository<Company> _companyRepo;
         private readonly IRepository<Department, Guid> _deptRepo;
         private readonly IRepository<Position, Guid> _posRepo;
 
         public DataSeederContributor(IRepository<Governorate> governorateRepo, IRepository<City> cityRepository,
-            IRepository<Department, Guid> deptRepo, IRepository<Position, Guid> posRepo)
+            IRepository<Department, Guid> deptRepo, IRepository<Position, Guid> posRepo, IRepository<Company> companyRepo)
         {
             _governorateRepo = governorateRepo;
             _cityRepository = cityRepository;
             _deptRepo = deptRepo;
             _posRepo = posRepo;
+            _companyRepo = companyRepo;
         }
         public async Task SeedAsync(DataSeedContext context)
         {
             var found = await _governorateRepo.FirstOrDefaultAsync();
             if(found==null)
-            await seedGovCityAsync();
+            {
+                await seedGovCityAsync();
+            }
             await seedDeptPosAsync();
-
         }
         public async Task seedDeptPosAsync()
         {
 
-            // Define departments and their positions
+            var company = new Company
+            {
+                Name="Express"
+            };
+           var express= await _companyRepo.InsertAsync(company);
             var departments = new List<Department>
         {
-            new Department { Name = "الإدارة العليا", Positions = new List<Position>
+            new Department { Name = "الإدارة العليا",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "CEO" },
                     new Position { Name = "General Manager" }
                 }
             },
-            new Department { Name = "الشئون القانونية", Positions = new List<Position>
+            new Department { Name = "الشئون القانونية",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Legal Affairs Manager" },
                     new Position { Name = "Legal affairs specialist" }
                 }
             },
-            new Department { Name = "المالية", Positions = new List<Position>
+            new Department { Name = "المالية",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Financial Manager" },
                     new Position { Name = "Accountant" }
                 }
             },
-            new Department { Name = "الموارد البشرية", Positions = new List<Position>
+            new Department { Name = "الموارد البشرية",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "HR Manager" },
                     new Position { Name = "HR specialist" },
@@ -66,21 +73,21 @@ namespace ExpressMs.Recruitment
                     new Position { Name = "Buffet worker" }
                 }
             },
-            new Department { Name = "التسويق و المبيعات", Positions = new List<Position>
+            new Department { Name = "التسويق و المبيعات",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Marketing and sales Manager" },
                     new Position { Name = "Marketing and sales specialist" },
                     new Position { Name = "Sales representative" }
                 }
             },
-            new Department { Name = "المشتريات", Positions = new List<Position>
+            new Department { Name = "المشتريات",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Procurement Manager" },
                     new Position { Name = "Procurement Specialist" },
                     new Position { Name = "Procurement representative" }
                 }
             },
-            new Department { Name = "المشروعات", Positions = new List<Position>
+            new Department { Name = "المشروعات",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Projects manager" },
                     new Position { Name = "Projects Engineer" },
@@ -112,14 +119,14 @@ namespace ExpressMs.Recruitment
                     new Position { Name = "Cleaning Worker" }
                 }
             },
-            new Department { Name = "السلامة و الصحة المهنية", Positions = new List<Position>
+            new Department { Name = "السلامة و الصحة المهنية",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "HSE Manager" },
                     new Position { Name = "HSE Supervisor" },
                     new Position { Name = "HSE Specialist" }
                 }
             },
-            new Department { Name = "الجودة", Positions = new List<Position>
+            new Department { Name = "الجودة",CompanyId=express.Id, Positions = new List<Position>
                 {
                     new Position { Name = "Internal Audit Director" },
                     new Position { Name = "Quality Assurance Manager" },
@@ -156,6 +163,7 @@ namespace ExpressMs.Recruitment
                 }
             }
         }
+        
         public async Task seedGovCityAsync()
         {
             var governorates = new List<Governorate>

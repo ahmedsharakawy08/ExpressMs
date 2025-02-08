@@ -9,7 +9,19 @@ namespace ExpressMs.Requests
     public enum RequestsTypes
     {
         Vacation=1,
-        Hiring=2
+        Hiring=2,
+        Penality=3,
+        Resign=4,
+        Clearance=5,
+        Rewards=6,
+        OverTime=7
+    }
+    public enum ViolationRepeatition
+    {
+        One = 1,
+        Two = 2,
+        Three= 3,
+        MoreThanThree=4
     }
     public enum RequestsStatus
     {
@@ -20,7 +32,8 @@ namespace ExpressMs.Requests
     public enum VacationType
     {
         Annual = 1,
-        Casual = 2
+        Casual = 2,
+        RestReplacement= 3
     }
     public enum HiringRequestJobType
     {

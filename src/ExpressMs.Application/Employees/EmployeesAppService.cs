@@ -17,6 +17,8 @@ namespace ExpressMs.Users
     {
         private readonly IRepository<EmployeesData, Guid> _employeesRepo;
         private readonly IRepository<RecruitmentApplication> _recruitmentAppRepo;
+        private readonly IRepository<Department> _deptRepo;
+        private readonly IRepository<Position> _posRepo;
         private readonly IIdentityUserRepository _userRepo;
         private readonly IdentityUserManager _userManager;
         private readonly IRepository<EmployeesPapersTypes> _employeePaperType;
@@ -27,7 +29,9 @@ namespace ExpressMs.Users
             IIdentityUserRepository userRepo,
             IdentityUserManager userManager,
           IRepository<EmployeesPapersTypes> employeePaperType,
-          IRepository<PapersToUsers> papersToUsers)
+          IRepository<PapersToUsers> papersToUsers,
+            IRepository<Department> deptRepo,
+            IRepository<Position> posRepo)
         {
             _employeesRepo = employeesRepo;
             _recruitmentAppRepo = recruitmentAppRepo;
@@ -35,14 +39,35 @@ namespace ExpressMs.Users
             _userManager = userManager;
           _employeePaperType = employeePaperType;
           _papersToUsers = papersToUsers;
+            _posRepo= posRepo;
+            _deptRepo= deptRepo;
 
         }
         public async Task<EmployeesDataDto> GetEmployeeByIdAsync(Guid Id)
         {
-            var Employee = await _employeesRepo.GetAsync(obj => obj.UserId == Id, true);
-            var data = ObjectMapper.Map<EmployeesData, EmployeesDataDto>(Employee);
+            var employee = await _employeesRepo.GetAsync(obj => obj.UserId == Id, true);
+            var data = ObjectMapper.Map<EmployeesData, EmployeesDataDto>(employee);
             return data;
         }
+        public async Task<List<EmployeesDataDto>> GetEmployeeByComanyId(Guid companyId)
+        {
+            var employee = await _employeesRepo.GetListAsync();
+            var departments = await _deptRepo.GetListAsync(obj => obj.CompanyId == companyId);
+            var positions = departments.SelectMany(obj => obj.Positions).Select(obj => obj.Id).ToList();
+            employee = employee.Where(obj => positions.Contains(obj.PositionId)).ToList();
+            var data = ObjectMapper.Map<List<EmployeesData>, List<EmployeesDataDto>>(employee);
+            return data;
+        }
+        public async Task<List<EmployeesDataDto>> GetEmployeeByDepartmentId(Guid deptId)
+        {
+            var employee = await _employeesRepo.GetListAsync();
+            var departments = await _deptRepo.GetListAsync(obj => obj.Id == deptId);
+            var positions = departments.SelectMany(obj => obj.Positions).Select(obj => obj.Id).ToList();
+            employee = employee.Where(obj => positions.Contains(obj.PositionId)).ToList();
+            var data = ObjectMapper.Map<List<EmployeesData>, List<EmployeesDataDto>>(employee);
+            return data;
+        }
+
         public async Task<List<EmployeesDataDto>> GetEmployeesListAsync()
         {
             var Employee = await _employeesRepo.GetListAsync(true);

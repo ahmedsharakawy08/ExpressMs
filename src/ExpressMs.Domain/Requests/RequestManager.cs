@@ -3,9 +3,9 @@ using ExpressMs.Vacations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Twilio.Http;
+
 using Volo.Abp;
-using Volo.Abp.DependencyInjection;
+
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Uow;
@@ -20,14 +20,20 @@ namespace ExpressMs.Requests
         public readonly IRepository<RequestCycle> _requestCycleRepo;
         private readonly IVacationRequestApproval _vacationRequestApproval;
         private readonly IHiringRequestApproval _hiringRequestApproval;
+        private readonly IPenalityRequestApproval _penalityRequestApproaval;
         private readonly IVacationRecordManager _vacrecordManager;
+        private readonly IOverTimeRequestApproval _overTimeRequestApproval;
+        private readonly IRewardRequestApproval _rewardRequestApproval;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public RequestManager(IRepository<EmployeesData> employeesRepo,
             IRepository<RequestCycle> requestCycleRepo
             , IVacationRequestApproval vacationRequestApproval,
             IVacationRecordManager vacrecordManager, IHiringRequestApproval hiringRequestApproval,
-            IUnitOfWorkManager unitOfWorkManager
+            IPenalityRequestApproval penalityRequestApproaval,
+            IUnitOfWorkManager unitOfWorkManager,
+            IOverTimeRequestApproval overTimeRequestApproval,
+            IRewardRequestApproval rewardRequestApproval
            )
         {
             _employeesRepo = employeesRepo;
@@ -36,6 +42,9 @@ namespace ExpressMs.Requests
             _vacrecordManager = vacrecordManager;
             _hiringRequestApproval = hiringRequestApproval;
             _unitOfWorkManager = unitOfWorkManager;
+            _penalityRequestApproaval = penalityRequestApproaval;
+            _overTimeRequestApproval = overTimeRequestApproval;
+            _rewardRequestApproval = rewardRequestApproval;
         }
         public async Task<Request> CreateRequest(BaseRequestConfig baseRequestConfig, string config)
         {
@@ -47,7 +56,6 @@ namespace ExpressMs.Requests
             }
 
             var deptId = user.Position.DepartmentId;
-
             var requestcycle = await _requestCycleRepo.FindAsync(obj => obj.DeptId == deptId
             && obj.RequestTypes == RequestsTypes.Vacation);
 
@@ -62,35 +70,48 @@ namespace ExpressMs.Requests
 
                 if (!available)
                 {
-                    throw new UserFriendlyException("you donot have enough record");
+                    throw new UserFriendlyException("You donot have enough record");
                 }
-
-                request = new Request(Guid.NewGuid(), RequestsTypes.Vacation, requestcycle.Cycle,
-                                        config, RequestsStatus.Pending, vacation.UserId);
             }
-            if (baseRequestConfig is HiringRequestConfiguration hiring)
-            {
-                request = new Request(Guid.NewGuid(), RequestsTypes.Hiring, requestcycle.Cycle,
-                                        config, RequestsStatus.Pending, hiring.UserId);
-            }
+            //if (baseRequestConfig is HiringRequestConfiguration hiring)
+            //{
+            //    request = new Request(Guid.NewGuid(), RequestsTypes.Hiring, requestcycle.Cycle,
+            //                            config, RequestsStatus.Pending, baseRequestConfig.UserId);
+            //}
 
+            request = new Request(Guid.NewGuid(), baseRequestConfig.RequestsTypes, requestcycle.Cycle,
+                                 config, RequestsStatus.Pending, baseRequestConfig.UserId);
             return request;
         }
 
-    
-    public async Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status)
-    {
-        switch (request.RequestsTypes)
-        {
-            case RequestsTypes.Vacation:
-                request = await _vacationRequestApproval.ProcessRequest(config, request, status);
-                break;
-            case RequestsTypes.Hiring:
-                request = await _hiringRequestApproval.ProcessRequest(config, request, status);
-                break;
-        }
 
-        return request;
+        public async Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status)
+        {
+            switch (request.RequestsTypes)
+            {
+                case RequestsTypes.Vacation:
+                    request = await _vacationRequestApproval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.Hiring:
+                    request = await _hiringRequestApproval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.Penality:
+                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.Resign:
+                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.Clearance:
+                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.OverTime:
+                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    break;
+                case RequestsTypes.Rewards:
+                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    break;
+            }
+            return request;
+        }
     }
-}
 }

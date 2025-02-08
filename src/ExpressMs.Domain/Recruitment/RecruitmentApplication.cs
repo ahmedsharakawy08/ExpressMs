@@ -39,6 +39,7 @@ namespace ExpressMs.Recruitment
         public double AnnualRecord { set; get; }
         public double CasualRecord { set; get; }
         public DateTime DateToRecieveDocs { set; get; }
+        public Guid RequestId { set; get; }
         public double SafetyResult { set; get; }
         public DateTime ActualStartDate { set; get; }
         public int ContractPeriod { set; get; }//in months

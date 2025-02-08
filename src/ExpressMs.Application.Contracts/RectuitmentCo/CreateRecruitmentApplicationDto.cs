@@ -33,6 +33,8 @@ namespace ExpressMs.RectuitmentCo
         public MartialStatus MartialStatus { set; get; }
        [Required]
         public Guid PositionId { set; get; }
+        [Required]
+        public Guid RequestId { set; get; }
         public List<ApplicationEducationDto>ApplicationEducations { set; get; }
         public int NoticePeriod { set; get; }
         public double ExpectedSalary { set; get; }
@@ -57,7 +59,7 @@ namespace ExpressMs.RectuitmentCo
         public List<ApplicationRefrenceDto> ApplicationRefrence { set; get; }
         public List<CompanyRelationDtos> CompanyRelations { set; get; }
         public  ApplicationAddressDataDto ApplicationAddressData { get; set; }
-
+        
 
 
 

@@ -30,5 +30,6 @@ namespace ExpressMs.Requests
         public RequestsStatus Status { set; get; }
         public Guid RequesterId { get; set; }
         public string RequesterName { get; set; }
+        public DateTime CreationTime { set; get; }
     }
 }

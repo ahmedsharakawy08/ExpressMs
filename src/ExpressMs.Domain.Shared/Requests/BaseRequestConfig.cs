@@ -12,6 +12,7 @@ namespace ExpressMs.Requests
         public abstract RequestsTypes RequestsTypes { get; }
         public Guid UserId { set; get; }
         public string? UserName { set; get; }
+        public string? EmpCode { set; get; }
     }
     public  class VacationRequestConfiguration: BaseRequestConfig
     {
@@ -36,7 +37,57 @@ namespace ExpressMs.Requests
         public string? JobRequirment { set; get; }
 
     }
+    public class PenalityRequestConfiguration : BaseRequestConfig
+    {
+        public override RequestsTypes RequestsTypes => RequestsTypes.Penality;
+        public Guid PositionId { set; get; }
+        public string? DepartmentName { set; get; }
+        public string? PositionName { set; get; }
+        public string? DirectManagerName { set; get; }
+        public DateTime ViolationDate { set; get; }
+        public string? ViolationDetails { set; get; }
+        //for hr only
+        public bool? AdminInvestigationReq { set; get; }
+        public string? AdminInvestigationRecomm { set; get; }
+        public string? HrRecomm { set; get; }
+        public ViolationRepeatition ViolationRepeatition { set; get; }
+        public double? NoOfDays { set; get; }
 
+    }
+
+    public class ResignRequestConfiguration : BaseRequestConfig
+    {
+        public override RequestsTypes RequestsTypes => RequestsTypes.Resign;
+        public DateTime ResignDate { set; get; }
+        public DateTime LastWorkDate { set; get; }
+       //for managerApproval
+       public DateTime? EditedLastWorkDate { set; get; }
+
+    }
+    public class ClearanceRequestFormConfiguration : BaseRequestConfig
+    {
+        public override RequestsTypes RequestsTypes => RequestsTypes.Clearance;
+        public DateTime ClearanceDate { set; get; }
+        public DateTime HiringDate { set; get; }
+        public DateTime LastWorkDate { set; get; }
+        public Guid PositionId { set; get; }
+        public string DepartmentName { set; get; }
+        public string? PositionName { set; get; }
+    }
+    public class RewardsRequestFormConfiguration : BaseRequestConfig
+    {
+        public override RequestsTypes RequestsTypes => RequestsTypes.Clearance;
+        public int NoOfDays { set; get; }
+    }
+    public class OverTimeRequestFormConfiguration : BaseRequestConfig
+    {
+        //by manager
+        public override RequestsTypes RequestsTypes => RequestsTypes.Clearance;
+        public DateTime Date { set; get; }
+        public string TimeFrom { set; get; }
+        public string TimeTo { set; get; }
+        public double Rate { set; get; } //1.35 -1.7-2
+    }
     public static class AddDataFlowJsonConverterBuilderExtension
     {
         private static JsonConverter jsonConverter;

@@ -4,6 +4,7 @@ using ExpressMs.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ExpressMs.Migrations
 {
     [DbContext(typeof(ExpressMsDbContext))]
-    partial class ExpressMsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250128184909_hiring requestId")]
+    partial class hiringrequestId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -804,20 +807,6 @@ namespace ExpressMs.Migrations
                     b.ToTable("ExApplicationWorkExperieces", (string)null);
                 });
 
-            modelBuilder.Entity("ExpressMs.Recruitment.Company", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExCompanies", (string)null);
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.CompanyRelations", b =>
                 {
                     b.Property<Guid>("Id")
@@ -963,16 +952,11 @@ namespace ExpressMs.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("newsequentialid()");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("ExDepartments", (string)null);
                 });
@@ -3484,17 +3468,6 @@ namespace ExpressMs.Migrations
                     b.Navigation("RecruitmentApplication");
                 });
 
-            modelBuilder.Entity("ExpressMs.Recruitment.Department", b =>
-                {
-                    b.HasOne("ExpressMs.Recruitment.Company", "Company")
-                        .WithMany("Departments")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("ExpressMs.Recruitment.InsuranceData", b =>
                 {
                     b.HasOne("ExpressMs.Recruitment.RecruitmentApplication", "RecruitmentApplication")
@@ -3747,11 +3720,6 @@ namespace ExpressMs.Migrations
             modelBuilder.Entity("ExpressMs.GenericEntities.Governorate", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("ExpressMs.Recruitment.Company", b =>
-                {
-                    b.Navigation("Departments");
                 });
 
             modelBuilder.Entity("ExpressMs.Recruitment.Department", b =>

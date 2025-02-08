@@ -15,14 +15,14 @@ namespace ExpressMs.Vacation
     }
     public class VacationRecordDto
     {
+        public Guid Id { set; get; }
         public Guid UserId { get; set; }
         public string Name { set; get; }
         public double Annual { get; set; }
         public double Casual { get; set; }
     }
     public class UpdateVacationRecordDto
-    {
-        public Guid Id { set; get; }
+    { 
         public Guid UserId { get; set; }
         public double Annual { get; set; }
         public double Casual { get; set; }

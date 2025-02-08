@@ -58,6 +58,7 @@ public class ExpressMsDbContext :
     public DbSet<Request> Request { set; get; }
     public DbSet<PapersToUsers> PapersToUsers { set; get; }
     public DbSet<EmployeesPapersTypes> RequEmployeesPapersTypesest { set; get; }
+    public DbSet<Company> Company { set; get; }
 
 
 
@@ -247,6 +248,10 @@ public class ExpressMsDbContext :
         builder.Entity<EmployeesData>(b =>
         {
             b.ToTable(ExpressMsConsts.DbTablePrefix + "EmployeesData", ExpressMsConsts.DbSchema);
+        });
+        builder.Entity<Company>(b =>
+        {
+            b.ToTable(ExpressMsConsts.DbTablePrefix + "Companies", ExpressMsConsts.DbSchema);
         });
         builder.Entity<PersonalEmergencyPeople>(b =>
         {

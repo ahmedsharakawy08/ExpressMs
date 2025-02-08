@@ -16,7 +16,6 @@ namespace ExpressMs.Requests
         public readonly IRepository<RequestStates> _requestState;
         private readonly IRepository<Request> _requestRepo;
         private readonly IRepository<RequestCycle> _requestCycleRepo;
-        private readonly ICurrentUser _currentUser;
         private readonly IVacationRecordManager _vacationRecord;
         private readonly IVacationRecordManager _vacrecordManager;
         public VacationRequestApproval(IRepository<RequestStates> requestState,
@@ -28,7 +27,6 @@ namespace ExpressMs.Requests
             _requestState = requestState;
             _requestRepo = requestRepo;
             _requestCycleRepo = requestCycleRepo;
-            _currentUser = currentUser;
             _vacationRecord = vacationRecord;
             _vacrecordManager = vacrecordManager;
         }
@@ -37,11 +35,7 @@ namespace ExpressMs.Requests
             var state = request.RequestStates.Where(obj =>obj.Status == RequestsStatus.Pending)
                                             .First();
             var conf = (VacationRequestConfiguration)config;
-            if (_currentUser.Id != state.UserId)
-            {
-                throw new UserFriendlyException("you donot have permission to approve this request");
-            }
-
+ 
             var available = await _vacrecordManager.CheckRecordAvailable
                    (conf.UserId, conf.VacationType, conf.NoOfDays);
 

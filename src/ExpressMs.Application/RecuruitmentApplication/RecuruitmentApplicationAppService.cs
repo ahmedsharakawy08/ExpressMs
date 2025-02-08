@@ -64,6 +64,11 @@ namespace ExpressMs.RecuruitmentApplication
             var data = await _recruitmentAppRepo.FindAsync(obj => obj.Id == Id, true);
             return ObjectMapper.Map<RecruitmentApplication, RecruitmentApplicationDto>(data);
         }
+        public async Task<RecruitmentApplicationDto>GetAppsByReqId(Guid reqId)
+        {
+            var data = await _recruitmentAppRepo.FindAsync(obj => obj.RequestId == reqId, true);
+            return ObjectMapper.Map<RecruitmentApplication, RecruitmentApplicationDto>(data);
+        }
         public async Task ApproveEmployee(Guid appId)
         {
             var App = await _recruitmentAppRepo.FindAsync(obj => obj.Id == appId, true);
@@ -76,6 +81,10 @@ namespace ExpressMs.RecuruitmentApplication
             user.SetIsActive(true);
             //  var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: false);
             var userAdded = await _userManager.CreateAsync(user, "@Aa" + App.NationalID);
+            if(userAdded.Errors.Count()!=0)
+            {
+                 throw new UserFriendlyException(userAdded.Errors.ToList()[0].Code);
+            }
             // await uow.CompleteAsync();
             EmployeesData emp = new EmployeesData()
             {

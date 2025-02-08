@@ -18,5 +18,24 @@ namespace ExpressMs.Requests
     {
         public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
     }
-
+    public interface IPenalityRequestApproval
+    {
+        public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
+    }
+    public interface IResignRequestApproval
+    {
+        public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
+    }
+    public interface IClearanceRequestApproval
+    {
+        public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
+    }
+    public interface IOverTimeRequestApproval
+    {
+        public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
+    }
+    public interface IRewardRequestApproval
+    {
+        public Task<Request> ProcessRequest(BaseRequestConfig config, Request request, RequestsStatus status);
+    }
 }

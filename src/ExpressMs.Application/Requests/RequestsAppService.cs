@@ -36,10 +36,10 @@ namespace ExpressMs.Requests
             await _requestRepo.InsertAsync(request);
             await _requestState.InsertAsync(request.RequestState);
         }
-        public async Task Processrequest(Guid reqId, RequestsStatus status)
+        public async Task Processrequest(Guid reqId, RequestsStatus status, string inputConfig)
         {
             var request = await _requestRepo.GetAsync(obj=>obj.Id==reqId,true);
-            var config = JsonConvert.DeserializeObject<BaseRequestConfig>(request.RequestConfigurations, DataFlowSerializerSettings);
+            var config = JsonConvert.DeserializeObject<BaseRequestConfig>(inputConfig, DataFlowSerializerSettings);
             request = await  _requestManager.ProcessRequest(config, request, status);
             await _requestRepo.UpdateAsync(request);
             await _requestState.UpdateAsync(request.RequestState);
