@@ -1,1 +1,44 @@
 
+name: Deploy to IIS on VPS
+
+on:
+  push:
+    branches:
+      - PayrollPaySlip  # or the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: windows-latest  # Use the Windows environment for the GitHub Action job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Checkout the code from the repo
+
+    - name: Set up PowerShell
+      uses: actions/setup-powershell@v2
+
+    - name: Deploy to VPS via SSH
+      run: |
+        $ErrorActionPreference = "Stop"
+        
+        # Replace these with your actual variables
+        $hostname = "208.109.233.100"
+        $username = "100-233-109-208\express"
+        $password = "Express1$$"
+        $remoteFolder = "C:\inetpub\Backend\ExpressPublic"
+        
+        # Install SSH client if needed (Windows environments)
+        Install-WindowsFeature -Name "OpenSSH.Client"
+
+        # Copy files from GitHub repo to VPS
+        scp -r .\* $username@$hostname:$remoteFolder
+
+        # Optional: Restart IIS application pool or site
+        Invoke-Command -ScriptBlock {
+            iisreset
+        } -Credential (New-Object System.Management.Automation.PSCredential($username, (ConvertTo-SecureString $password -AsPlainText -Force)))
+        
+      env:
+        VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+        VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        VPS_IP: ${{ secrets.VPS_IP }}
