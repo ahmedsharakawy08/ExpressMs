@@ -28,10 +28,9 @@ jobs:
     - name: Build the project
       run: dotnet build --configuration Release
 
-   - name: Publish the project
-      run: |
-        # Create a folder within the GitHub workspace
-        $publishFolder = "$env:GITHUB_WORKSPACE\publish"
+    # Step 5: Publish the project to a folder
+    - name: Publish the project
+    $publishFolder = "$env:GITHUB_WORKSPACE\publish"
         
         # Create the directory if it doesn't exist
         New-Item -ItemType Directory -Force -Path $publishFolder
