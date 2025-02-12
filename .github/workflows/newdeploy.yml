@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # Or your specific branch like 'development'
+      - payrollPayslip  # Or your specific branch like 'development'
 
 jobs:
   build:
