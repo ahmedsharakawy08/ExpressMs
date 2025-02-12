@@ -23,8 +23,6 @@ jobs:
           choco install nuget.commandline
 
       - name: Build the solution
-        run: |
-          msbuild C:\Users\Sharkawy\aspnet-core\ExpressMs.sln /p:Configuration=Release
 
       - name: Publish the code
         run: |
