@@ -30,4 +30,4 @@ jobs:
 
     # Step 5: Publish the project to a folder
     - name: Publish the project
-      run: dotnet publish --configuration Release --output \\208.109.233.100\c$\New folder
+      run: dotnet publish --configuration Release --output $env:GITHUB_WORKSPACE\publish
