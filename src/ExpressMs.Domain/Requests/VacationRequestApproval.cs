@@ -33,8 +33,7 @@ namespace ExpressMs.Requests
         }
         public  async Task<Request> ProcessRequest(BaseRequestConfig config,Request request, RequestsStatus status)
         {
-            var state = request.RequestStates.Where(obj =>obj.Status == RequestsStatus.Pending)
-                                            .First();
+            var state = request.RequestStates.Where(obj =>obj.Status == RequestsStatus.Pending).First();
             var conf = (VacationRequestConfiguration)config;
             config.RejectionReasone = config.RejectionReasone;
             request.RequestConfigurations = JsonConvert.SerializeObject(conf);
@@ -50,8 +49,8 @@ namespace ExpressMs.Requests
             request.RequestState= state;
             var cycle = await _requestCycleRepo.GetAsync(obj => obj.RequestTypes == request.RequestsTypes);
             var cycleArray = cycle.Cycle.Split(";");
-            var current = Guid.Parse(cycleArray[cycleArray.Length - 1]);
-            if (current == state.UserId)
+            var last = Guid.Parse(cycleArray[cycleArray.Length - 1]);
+            if (last == state.UserId)
             {
                await  _vacationRecord.SubtractRecord(conf.UserId, conf.VacationType, conf.NoOfDays);
                request.Status = status;
