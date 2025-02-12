@@ -30,4 +30,4 @@ jobs:
 
     # Step 5: Publish the project to a folder
     - name: Publish the project
-      run: dotnet publish --configuration Release --output ./publish
+      run: dotnet publish --configuration Release --output bin/Release/netX.X/publish
