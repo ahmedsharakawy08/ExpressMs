@@ -2,15 +2,11 @@
 using ExpressMs.Vacations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
 using Volo.Abp;
-
 using Volo.Abp.Domain.Repositories;
-using Volo.Abp.Domain.Services;
 using Volo.Abp.Uow;
-using Volo.Abp.Users;
-using Task = System.Threading.Tasks.Task;
 
 namespace ExpressMs.Requests
 {
@@ -18,6 +14,7 @@ namespace ExpressMs.Requests
     {
         public readonly IRepository<EmployeesData> _employeesRepo;
         public readonly IRepository<RequestCycle> _requestCycleRepo;
+        private readonly IRepository<RequestStates> _requestState;
         private readonly IVacationRequestApproval _vacationRequestApproval;
         private readonly IHiringRequestApproval _hiringRequestApproval;
         private readonly IPenalityRequestApproval _penalityRequestApproaval;
@@ -25,6 +22,8 @@ namespace ExpressMs.Requests
         private readonly IOverTimeRequestApproval _overTimeRequestApproval;
         private readonly IRewardRequestApproval _rewardRequestApproval;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IResignRequestApproval _resignRequestApproval;
+        private readonly IClearanceRequestApproval _clearanceRequestApproval;
 
         public RequestManager(IRepository<EmployeesData> employeesRepo,
             IRepository<RequestCycle> requestCycleRepo
@@ -33,7 +32,11 @@ namespace ExpressMs.Requests
             IPenalityRequestApproval penalityRequestApproaval,
             IUnitOfWorkManager unitOfWorkManager,
             IOverTimeRequestApproval overTimeRequestApproval,
-            IRewardRequestApproval rewardRequestApproval
+            IRewardRequestApproval rewardRequestApproval,
+            IResignRequestApproval resignRequestApproval,
+             IClearanceRequestApproval clearanceRequestApproval,
+             IRepository<RequestStates> requestState
+
            )
         {
             _employeesRepo = employeesRepo;
@@ -45,6 +48,9 @@ namespace ExpressMs.Requests
             _penalityRequestApproaval = penalityRequestApproaval;
             _overTimeRequestApproval = overTimeRequestApproval;
             _rewardRequestApproval = rewardRequestApproval;
+            _resignRequestApproval = resignRequestApproval;
+            _clearanceRequestApproval = clearanceRequestApproval;
+            _requestState = requestState;
         }
         public async Task<Request> CreateRequest(BaseRequestConfig baseRequestConfig, string config)
         {
@@ -99,19 +105,36 @@ namespace ExpressMs.Requests
                     request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
                     break;
                 case RequestsTypes.Resign:
-                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    request = await _resignRequestApproval.ProcessRequest(config, request, status);
                     break;
                 case RequestsTypes.Clearance:
-                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    request = await _clearanceRequestApproval.ProcessRequest(config, request, status);
                     break;
                 case RequestsTypes.OverTime:
-                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    request = await _overTimeRequestApproval.ProcessRequest(config, request, status);
                     break;
                 case RequestsTypes.Rewards:
-                    request = await _penalityRequestApproaval.ProcessRequest(config, request, status);
+                    request = await _rewardRequestApproval.ProcessRequest(config, request, status);
                     break;
             }
+           await  GenerateState(request);
             return request;
+        }
+        public async Task GenerateState(Request request)
+        {
+            var state = request.RequestStates.Where(obj => obj.Status == RequestsStatus.Pending).First();
+            var cycle = await _requestCycleRepo.GetAsync(obj => obj.RequestTypes == request.RequestsTypes);
+            var cycleArray = cycle.Cycle.Split(";");
+            var last = Guid.Parse(cycleArray[cycleArray.Length - 1]);
+            if(last == state.UserId)
+            {
+                return;
+            }
+            var requeststate = new RequestStates();
+            requeststate.Status = RequestsStatus.Pending;
+            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
+            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
+            await _requestState.InsertAsync(requeststate);
         }
     }
 }

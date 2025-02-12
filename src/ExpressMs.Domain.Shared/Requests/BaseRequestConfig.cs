@@ -13,6 +13,7 @@ namespace ExpressMs.Requests
         public Guid UserId { set; get; }
         public string? UserName { set; get; }
         public string? EmpCode { set; get; }
+        public string RejectionReasone { set; get; }
     }
     public  class VacationRequestConfiguration: BaseRequestConfig
     {
@@ -21,7 +22,7 @@ namespace ExpressMs.Requests
         public DateTime To { set; get; }
         public VacationType VacationType {  set; get; }
         public double NoOfDays { set; get; }
-       
+       public string Reasone { set; get; }
     }
     public class HiringRequestConfiguration : BaseRequestConfig
     {

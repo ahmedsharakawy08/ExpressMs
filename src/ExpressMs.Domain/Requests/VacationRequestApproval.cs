@@ -1,4 +1,5 @@
 ﻿using ExpressMs.Vacations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,9 @@ namespace ExpressMs.Requests
             var state = request.RequestStates.Where(obj =>obj.Status == RequestsStatus.Pending)
                                             .First();
             var conf = (VacationRequestConfiguration)config;
- 
+            config.RejectionReasone = config.RejectionReasone;
+            request.RequestConfigurations = JsonConvert.SerializeObject(conf);
+
             var available = await _vacrecordManager.CheckRecordAvailable
                    (conf.UserId, conf.VacationType, conf.NoOfDays);
 
@@ -51,15 +54,9 @@ namespace ExpressMs.Requests
             if (current == state.UserId)
             {
                await  _vacationRecord.SubtractRecord(conf.UserId, conf.VacationType, conf.NoOfDays);
-                request.Status = status;
-                return request;
+               request.Status = status;
+               return request;
             }
-
-            var requeststate = new RequestStates();
-            requeststate.Status = RequestsStatus.Pending;
-            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
-            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
-            await _requestState.InsertAsync(requeststate);
             return request;
         }
     }

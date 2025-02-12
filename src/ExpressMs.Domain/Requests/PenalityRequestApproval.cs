@@ -35,21 +35,11 @@ namespace ExpressMs.Requests
             conf.HrRecomm = conf.HrRecomm;
             conf.AdminInvestigationReq = conf.AdminInvestigationReq;
             conf.ViolationRepeatition = conf.ViolationRepeatition;
+            conf.RejectionReasone = conf.RejectionReasone;
             var configString=JsonConvert.SerializeObject(conf);
             request.RequestConfigurations = configString;
-            await _request.UpdateAsync(request);
-
             state.Status = status;
             request.RequestState = state;
-            var cycle = await _requestCycleRepo.GetAsync(obj => obj.RequestTypes == request.RequestsTypes);
-            var cycleArray = cycle.Cycle.Split(";");
-            var current = Guid.Parse(cycleArray[cycleArray.Length - 1]);
-
-            var requeststate = new RequestStates();
-            requeststate.Status = RequestsStatus.Pending;
-            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
-            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
-            await _requestState.InsertAsync(requeststate);
             return request;
         }
     }

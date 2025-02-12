@@ -1,4 +1,5 @@
 ﻿using ExpressMs.Vacations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,14 +32,10 @@ namespace ExpressMs.Requests
             var conf = (HiringRequestConfiguration)config;
             state.Status = status;
             request.RequestState = state;
-            var cycle = await _requestCycleRepo.GetAsync(obj => obj.RequestTypes == request.RequestsTypes);
-            var cycleArray = cycle.Cycle.Split(";");
-            var current = Guid.Parse(cycleArray[cycleArray.Length - 1]);
+            config.RejectionReasone=config.RejectionReasone;
+            request.RequestConfigurations=JsonConvert.SerializeObject(conf);            
             var requeststate = new RequestStates();
             requeststate.Status = RequestsStatus.Pending;
-            var index = cycleArray.FindIndex(obj => Guid.Parse(obj) == state.UserId);
-            requeststate.UserId = Guid.Parse(cycleArray[index + 1]);
-            await _requestState.InsertAsync(requeststate);
             return request;
         }
     }
