@@ -1,35 +1,33 @@
-name: Deploy to VPS
+name: Build and Deploy to VPS
 
 on:
   push:
     branches:
-      - main  # Or your specific branch like 'development'
+      - payrollPayslip  # Trigger deployment when pushing to the `main` branch (can be any branch you prefer)
 
 jobs:
-  build:
-    runs-on: windows-latest  # You can choose a different runner if you prefer
+  build-and-deploy:
+    runs-on: windows-latest  # Use Windows runner to build .NET code (or any other platform as per your project)
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Step 1: Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-        with:
-          msbuild-version: 'latest'
+    # Step 2: Set up .NET (if you're building an ASP.NET Core app)
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.x'  # Replace with the version your project uses
 
-      - name: Install dependencies
-        run: |
-          choco install nuget.commandline
+    # Step 3: Restore dependencies (for .NET projects)
+    - name: Restore dependencies
+      run: dotnet restore
 
-      - name: Build the solution
+    # Step 4: Build the project (for .NET projects)
+    - name: Build the project
+      run: dotnet build --configuration Release
 
-      - name: Publish the code
-        run: |
-          msbuild C:\Users\Sharkawy\aspnet-core\ExpressMs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
-
-      - name: Copy files to VPS
-        run: |
-          $password = ConvertTo-SecureString "Express1$$" -AsPlainText -Force
-          $credential = New-Object System.Management.Automation.PSCredential("100-233-109-208\express", Express1$$)
-          Copy-Item -Path "C:\Users\Sharkawy\Dropbox\My PC (DESKTOP-AG3QV3I)\Desktop\ExpressPublic" -Destination "\\200.109.233.100\C:\inetpub\Backend\Publish" -Recurse -Credential $credential
+    # Step 5: Publish the project to a folder
+    - name: Publish the project
+      run: dotnet publish --configuration Release --output ./publish
