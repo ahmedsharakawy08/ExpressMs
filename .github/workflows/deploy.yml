@@ -24,11 +24,11 @@ jobs:
 
       - name: Build the solution
         run: |
-          msbuild path_to_your_solution.sln /p:Configuration=Release
+          msbuild C:\Users\Sharkawy\aspnet-core\ExpressMs.sln /p:Configuration=Release
 
       - name: Publish the code
         run: |
-          msbuild path_to_your_solution.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+          msbuild C:\Users\Sharkawy\aspnet-core\ExpressMs.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
       - name: Copy files to VPS
         run: |
