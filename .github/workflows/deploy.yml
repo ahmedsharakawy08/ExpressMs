@@ -30,13 +30,4 @@ jobs:
 
     # Step 5: Publish the project to a folder
     - name: Publish the project
-    $publishFolder = "$env:GITHUB_WORKSPACE\publish"
-        
-        # Create the directory if it doesn't exist
-        New-Item -ItemType Directory -Force -Path $publishFolder
-        
-        # Publish the project to the created directory
-        dotnet publish --configuration Release --output $publishFolder
-        
-        # List contents of the publish directory for debugging
-        Get-ChildItem -Recurse $publishFolder
+      run: dotnet publish --configuration Release --output \\208.109.233.100\c$\New folder
