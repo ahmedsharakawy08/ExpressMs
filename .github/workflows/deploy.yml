@@ -34,3 +34,9 @@ jobs:
         $publishFolder = "$env:GITHUB_WORKSPACE\publish"
         New-Item -ItemType Directory -Force -Path $publishFolder
         dotnet publish --configuration Release --output $publishFolder
+
+      name: Upload the publish directory as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: published-files   # This is the name you'll see in the GitHub UI
+        path: ${{ github.workspace }}/publish
